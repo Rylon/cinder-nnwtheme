@@ -1,0 +1,19 @@
+# Coding Horror opens on a bare <img> placed directly in the body, not wrapped in
+# a <figure> or <p>, so nothing puts space between it and the drop-cap paragraph
+# below (issue #5). Rebuilt from the public feed's content:encoded, trimmed.
+# Preview with: npx nnw-theme@2 render codinghorror-lead-image
+
+byline = 'Jeff Atwood'
+date_long = 'September 25, 2026'
+date_medium = 'Sep 25, 2026'
+date_short = '9/25/26'
+dateline_style = 'articleDateline'
+datetime_long = 'September 25, 2026 at 10:54:04 PM'
+datetime_medium = 'Sep 25, 2026 at 10:54 PM'
+datetime_short = '9/25/26, 10:54 PM'
+feed_link = 'https://blog.codinghorror.com/'
+feed_link_title = 'Coding Horror'
+preferred_link = 'https://blog.codinghorror.com/if-we-do-not-stop-to-help-each-other-what-do-we-become/'
+title = 'If we do not stop to help each other, what do we become?'
+body = '''
+<img src="https://storage.ghost.io/c/eb/aa/ebaa2665-01a8-4415-8825-69d1f0e8fd19/content/images/2026/09/helping-each-other-repair.jpg" alt="If we do not stop to help each other, what do we become?"><p>Yesterday, I received this email as a response to <a href="https://blog.codinghorror.com/you-cant-vibe-code-love/" rel="noreferrer">You Can&apos;t Vibe Code Love</a>. It&apos;s such a remarkable and powerful statement that I asked permission to share it here, in its entirety, with personal information redacted:</p><blockquote>Hey Jeff,<br><br>Hope you and your family are doing well.<br><br>Just jogging your memory; I reached out to you (and John Carmack) about how difficult interviewing had become despite me being a stellar engineer at my work. You offered some words of wisdom, wrote me a postcard, which I still have, and stickers (which my kids loved).</blockquote>'''

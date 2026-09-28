@@ -431,6 +431,16 @@ figure {
 	margin-top: 0;
 }
 
+/* A bare lede image (Ghost prepends the feature image to the content, as Coding
+   Horror's feed shows) has no figure or paragraph margin to part it from the
+   opening paragraph. Space it like a figure. Only the lede: mid-article, a bare
+   image is usually a flattened figure (Ars), its caption left as a loose text
+   node CSS cannot select; a margin here would push the caption off its
+   image and against the next paragraph. */
+.articleBody > img:first-child {
+	margin-bottom: 1.6em;
+}
+
 /* Full-bleed media: images span the full width of the article column,
    corners flush. Standalone images bleed directly; inside a <figure> only
    the image bleeds, so the caption (and any loose caption text the feed
