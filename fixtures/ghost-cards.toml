@@ -1,0 +1,112 @@
+# Ghost's Koenig editor cards (kg-*-card) as they arrive in RSS content:encoded,
+# copied from the Coding Horror, 404 Media, and Ghost blog feeds (September 2026)
+# and trimmed. X's widgets.js <script> is dropped: check forbids external requests.
+# Preview with: npx nnw-theme@2 render ghost-cards
+
+byline = 'Various'
+date_long = 'September 28, 2026'
+date_medium = 'Sep 28, 2026'
+date_short = '9/28/26'
+dateline_style = 'articleDateline'
+datetime_long = 'September 28, 2026 at 9:00:00 AM'
+datetime_medium = 'Sep 28, 2026 at 9:00 AM'
+datetime_short = '9/28/26, 9:00 AM'
+feed_link = 'https://ghost.org/blog/'
+feed_link_title = 'Ghost Cards'
+preferred_link = 'https://ghost.org/blog/'
+time_long = '9:00:00 AM PDT'
+time_medium = '9:00:00 AM'
+time_short = '9:00 AM'
+title = 'Ghost editor cards'
+body = '''
+<p>Ghost’s editor, Koenig, writes each rich block as a <code>kg-card</code>, and Ghost’s RSS feed carries that markup unchanged. These cards are copied from the Coding Horror, 404 Media, and Ghost blog feeds.</p>
+<p>An image card with a caption:</p>
+<figure class="kg-card kg-image-card kg-card-hascaption"><img src="https://storage.ghost.io/c/eb/aa/ebaa2665-01a8-4415-8825-69d1f0e8fd19/content/images/2026/08/39b3f803d2a81f3f.jpg" class="kg-image" alt="You Can&apos;t &quot;Vibe Code&quot; Love" loading="lazy" width="492" height="316"><figcaption><span style="white-space: pre-wrap;">it is difficult to get a German to smile so you have to sneak attack</span></figcaption></figure>
+<p>A YouTube embed. Ghost’s oEmbed markup sizes every one at 200×113:</p>
+<figure class="kg-card kg-embed-card"><iframe width="200" height="113" src="https://www.youtube.com/embed/j7x0BTwfn_I?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen title="WWC26 - None of Us Is As Dumb As All of Us: Community And Knowledge Go Hand In Hand"></iframe></figure>
+<p>A TED embed, sized 560×316:</p>
+<figure class="kg-card kg-embed-card"><iframe src="https://embed.ted.com/talks/seth_shostak_et_is_probably_out_there_get_ready" width="560" height="316" frameborder="0" scrolling="no" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></figure>
+<p>A bookmark card, a link preview; the feed drops its thumbnail and icon:</p>
+<figure class="kg-card kg-bookmark-card"><a class="kg-bookmark-container" href="https://rgmii.org/why-pledge-to-share-the-american-dream/"><div class="kg-bookmark-content"><div class="kg-bookmark-title">Why Pledge to Share the American Dream? &#x2022; RGMII</div><small><div class="kg-bookmark-description">Why we pledged to Share the American Dream: RGMII&#x2019;s &#x24;50M plan funds rural guaranteed minimum income studies to expand opportunity and strengthen democracy.</div></small></div></a></figure>
+<p>Text between two bookmark cards.</p>
+<figure class="kg-card kg-bookmark-card"><a class="kg-bookmark-container" href="https://blog.codinghorror.com/the-road-not-taken-is-guaranteed-minimum-income/"><div class="kg-bookmark-content"><div class="kg-bookmark-title">The Road Not Taken is Guaranteed Minimum Income</div><small><div class="kg-bookmark-description">The dream is incomplete until we share it with our fellow Americans.</div></small></div></a></figure>
+<p>A toggle card:</p>
+<div class="kg-card kg-toggle-card" data-kg-toggle-state="close">
+            <div class="kg-toggle-heading">
+                <h4 class="kg-toggle-heading-text"><span style="white-space: pre-wrap;">Immediate Share The American Dream Donations (~&#x24;21M)</span></h4>
+                <button class="kg-toggle-card-icon" aria-label="Expand toggle to read content">
+                    <svg id="Regular" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path class="cls-1" d="M23.25,7.311,12.53,18.03a.749.749,0,0,1-1.06,0L.75,7.311"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="kg-toggle-content"><ul><li value="1"><a href="https://teamrubiconusa.org/" target="_blank" rel="noopener noreferrer"><span style="white-space: pre-wrap;">Team Rubicon</span></a><span style="white-space: pre-wrap;"> &#x2014; &#x24;1M</span></li><li value="2"><a href="https://childrenshungerfund.org/" target="_blank" rel="noopener noreferrer"><span style="white-space: pre-wrap;">Children&#x2019;s Hunger Fund</span></a><span style="white-space: pre-wrap;"> &#x2014; &#x24;1M</span></li><li value="3"><a href="https://pen.org/" target="_blank" rel="noopener noreferrer"><span style="white-space: pre-wrap;">PEN America</span></a><span style="white-space: pre-wrap;"> &#x2014; &#x24;1M</span></li><li value="4"><a href="https://www.thetrevorproject.org/" target="_blank" rel="noopener noreferrer"><span style="white-space: pre-wrap;">The Trevor Project</span></a><span style="white-space: pre-wrap;"> &#x2014; &#x24;1M</span></li></ul></div>
+        </div>
+<p>A callout card:</p>
+<div class="kg-card kg-callout-card kg-callout-card-grey"><div class="kg-callout-emoji">&#x1f4a1;</div><div class="kg-callout-text"><b><strong style="white-space: pre-wrap;">Are you a prompt reviewer for OpenAI, Anthropic, or another AI company? I would love to hear from you. Using a non-work device, you can message me securely on Signal at joseph.404 or send me an email at joseph@404media.co.</strong></b></div></div>
+<p>A minimal call-to-action card:</p>
+<div class="kg-card kg-cta-card kg-cta-bg-grey kg-cta-minimal    " data-layout="minimal">
+            
+            <div class="kg-cta-content">
+                
+                
+                    <div class="kg-cta-content-inner">
+                    
+                        <div class="kg-cta-text">
+                            <p><span style="white-space: pre-wrap;">&#x1f4e2; Please note that after this post, Coding Horror will revert to normal nerdy blog posts, and all future GMI content will be at a dedicated site linked below.</span></p>
+                        </div>
+                    
+                    
+                    </div>
+                
+            </div>
+        </div>
+<p>A sponsored call-to-action card with an image and a button:</p>
+<div class="kg-card kg-cta-card kg-cta-bg-yellow kg-cta-minimal  kg-cta-has-img  kg-cta-centered" data-layout="minimal">
+            
+                <div class="kg-cta-sponsor-label-wrapper">
+                    <div class="kg-cta-sponsor-label">
+                        <b><strong style="white-space: pre-wrap;">from our friends at KAGI</strong></b>
+                    </div>
+                </div>
+            
+            <div class="kg-cta-content">
+                
+                    <div class="kg-cta-image-container">
+                        <a href="https://kagi.com/p/GHOST2768135B82?ref=ghost.org"><img src="https://storage.ghost.io/c/2d/17/2d1720de-b48e-4729-8941-6f1d1300a8cc/content/images/2026/01/unnamed.webp" alt="CTA Image" data-image-dimensions="240x240"></a>
+                    </div>
+                
+                
+                    <div class="kg-cta-content-inner">
+                    
+                        <div class="kg-cta-text">
+                            <p><span style="white-space: pre-wrap;">Always wanted a search engine with no ads, surveillance, or junk? </span><a href="https://kagi.com/?ref=ghost.org" class="cta-link-color"><b><strong style="white-space: pre-wrap;">Kagi</strong></b></a><span style="white-space: pre-wrap;">, the world&apos;s best search engine, is giving Ghost users </span><b><strong style="white-space: pre-wrap;">90 days</strong></b><span style="white-space: pre-wrap;"> of free access to their Professional plan for new accounts. Happy searching! </span></p>
+                        </div>
+                    
+                    
+                        <a href="https://kagi.com/p/GHOST2768135B82?ref=ghost.org" class="kg-cta-button " style="background-color: #000000; color: #FFFFFF;">
+                            UPGRADE YOUR SEARCH NOW
+                        </a>
+                        
+                    </div>
+                
+            </div>
+        </div>
+<p>A button card:</p>
+<div class="kg-card kg-button-card kg-align-left"><a href="https://youtu.be/jveUllo7Mjs?si=-zx-IWmxldVCPf4w&amp;t=2748" class="kg-btn kg-btn-accent">Off By One, Episode #2, 45:47</a></div>
+<p>A gallery card:</p>
+<figure class="kg-card kg-gallery-card kg-width-wide"><div class="kg-gallery-container"><div class="kg-gallery-row"><div class="kg-gallery-image"><img src="https://storage.ghost.io/c/0f/76/0f76b548-bc58-4f25-abc3-3f5ebca07da4/content/images/2026/09/CleanShot-2026-09-25-at-1.55.02-PM@2x.png" width="934" height="1098" loading="lazy" alt="AI Love Song for Mistress Played at Murder Trial Is Most Excruciating Watch in Recent Memory" srcset="https://storage.ghost.io/c/0f/76/0f76b548-bc58-4f25-abc3-3f5ebca07da4/content/images/size/w600/2026/09/CleanShot-2026-09-25-at-1.55.02-PM@2x.png 600w, https://storage.ghost.io/c/0f/76/0f76b548-bc58-4f25-abc3-3f5ebca07da4/content/images/2026/09/CleanShot-2026-09-25-at-1.55.02-PM@2x.png 934w" sizes="(min-width: 720px) 720px"></div><div class="kg-gallery-image"><img src="https://storage.ghost.io/c/0f/76/0f76b548-bc58-4f25-abc3-3f5ebca07da4/content/images/2026/09/CleanShot-2026-09-25-at-1.54.59-PM@2x.png" width="1212" height="1050" loading="lazy" alt="AI Love Song for Mistress Played at Murder Trial Is Most Excruciating Watch in Recent Memory" srcset="https://storage.ghost.io/c/0f/76/0f76b548-bc58-4f25-abc3-3f5ebca07da4/content/images/size/w600/2026/09/CleanShot-2026-09-25-at-1.54.59-PM@2x.png 600w, https://storage.ghost.io/c/0f/76/0f76b548-bc58-4f25-abc3-3f5ebca07da4/content/images/size/w1000/2026/09/CleanShot-2026-09-25-at-1.54.59-PM@2x.png 1000w, https://storage.ghost.io/c/0f/76/0f76b548-bc58-4f25-abc3-3f5ebca07da4/content/images/2026/09/CleanShot-2026-09-25-at-1.54.59-PM@2x.png 1212w" sizes="(min-width: 720px) 720px"></div></div><div class="kg-gallery-row"><div class="kg-gallery-image"><img src="https://storage.ghost.io/c/0f/76/0f76b548-bc58-4f25-abc3-3f5ebca07da4/content/images/2026/09/CleanShot-2026-09-25-at-1.54.55-PM@2x.png" width="1310" height="1208" loading="lazy" alt="AI Love Song for Mistress Played at Murder Trial Is Most Excruciating Watch in Recent Memory" srcset="https://storage.ghost.io/c/0f/76/0f76b548-bc58-4f25-abc3-3f5ebca07da4/content/images/size/w600/2026/09/CleanShot-2026-09-25-at-1.54.55-PM@2x.png 600w, https://storage.ghost.io/c/0f/76/0f76b548-bc58-4f25-abc3-3f5ebca07da4/content/images/size/w1000/2026/09/CleanShot-2026-09-25-at-1.54.55-PM@2x.png 1000w, https://storage.ghost.io/c/0f/76/0f76b548-bc58-4f25-abc3-3f5ebca07da4/content/images/2026/09/CleanShot-2026-09-25-at-1.54.55-PM@2x.png 1310w" sizes="(min-width: 720px) 720px"></div><div class="kg-gallery-image"><img src="https://storage.ghost.io/c/0f/76/0f76b548-bc58-4f25-abc3-3f5ebca07da4/content/images/2026/09/CleanShot-2026-09-25-at-1.54.52-PM@2x.png" width="1084" height="1122" loading="lazy" alt="AI Love Song for Mistress Played at Murder Trial Is Most Excruciating Watch in Recent Memory" srcset="https://storage.ghost.io/c/0f/76/0f76b548-bc58-4f25-abc3-3f5ebca07da4/content/images/size/w600/2026/09/CleanShot-2026-09-25-at-1.54.52-PM@2x.png 600w, https://storage.ghost.io/c/0f/76/0f76b548-bc58-4f25-abc3-3f5ebca07da4/content/images/size/w1000/2026/09/CleanShot-2026-09-25-at-1.54.52-PM@2x.png 1000w, https://storage.ghost.io/c/0f/76/0f76b548-bc58-4f25-abc3-3f5ebca07da4/content/images/2026/09/CleanShot-2026-09-25-at-1.54.52-PM@2x.png 1084w" sizes="(min-width: 720px) 720px"></div></div></div></figure>
+<p>A portrait video card:</p>
+<figure class="kg-card kg-video-card kg-width-regular" data-kg-thumbnail="https://storage.ghost.io/c/0f/76/0f76b548-bc58-4f25-abc3-3f5ebca07da4/content/media/2026/09/Body-Cam-Shows-Man-Being-Arrested-A-Week-After-Speaking-Out-at-Public-Meeting--1-_thumb.jpg" data-kg-custom-thumbnail>
+            <div class="kg-video-container">
+                <video src="https://storage.ghost.io/c/0f/76/0f76b548-bc58-4f25-abc3-3f5ebca07da4/content/media/2026/09/Body-Cam-Shows-Man-Being-Arrested-A-Week-After-Speaking-Out-at-Public-Meeting--1-.mp4" poster="https://storage.ghost.io/c/0f/76/0f76b548-bc58-4f25-abc3-3f5ebca07da4/content/media/2026/09/Body-Cam-Shows-Man-Being-Arrested-A-Week-After-Speaking-Out-at-Public-Meeting--1-_thumb.jpg" width="1080" height="1920" playsinline preload="metadata" controls></video>
+                
+                
+            </div>
+            
+        </figure>
+<p>An X embed, without its <code>widgets.js</code>:</p>
+<figure class="kg-card kg-embed-card"><blockquote class="twitter-tweet"><p lang="en" dir="ltr">we&apos;re expanding our &#x260e;&#xfe0f; &#x1f4de;  beta for muse! <a href="https://t.co/ZJnXM2vb4U?ref=404media.co">https://t.co/ZJnXM2vb4U</a></p>&#x2014; Alexandr Wang (@alexandr_wang) <a href="https://x.com/alexandr_wang/status/2100349174529265967?ref_src=twsrc%5Etfw&amp;ref=404media.co">September 16, 2026</a></blockquote></figure>
+<p>The alternative blockquote style:</p>
+<blockquote class="kg-blockquote-alt">&#x201c;From those to whom much is given, much is expected.&#x201d; &#x2014; <a style="font-weight:300;color: var(--color-secondary-text);" href="https://rgmii.org/mary-gates-philanthropic-quote/" rel="noopener noreferrer" target="_blank">Mary Gates</a></blockquote>
+<p>The end.</p>'''
