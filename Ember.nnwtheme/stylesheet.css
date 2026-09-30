@@ -71,11 +71,29 @@
 
 /* ---------- Base layout & canvas ------------------------------------ */
 
+/* The text column's width, for images that size themselves against it (see
+   Bleeding media). The root is the query container so 100cqw is the
+   viewport; the root's margins never collapse, so containing it changes no
+   spacing. Registered as a <length> so the em resolves here on the body,
+   matching max-width, and inherits as a fixed width. Containment also stops
+   the body's background from painting the canvas, so the root carries it. */
+@property --ember-column {
+	syntax: "<length>";
+	inherits: true;
+	initial-value: 0px;
+}
+
+:root {
+	container-type: inline-size;
+	background-color: var(--ember-bg);
+}
+
 body {
 	margin-left: auto;
 	margin-right: auto;
 	word-wrap: break-word;
 	max-width: 44em;
+	--ember-column: min(100cqw - 2 * var(--ember-bleed), 44em);
 
 	background-color: var(--ember-bg);
 	color: var(--ember-ink);
@@ -441,39 +459,51 @@ figure {
 	margin-bottom: 1.6em;
 }
 
-/* Full-bleed media: images span the full width of the article column,
-   corners flush. Standalone images bleed directly; inside a <figure> only
-   the image bleeds, so the caption (and any loose caption text the feed
-   dropped inside the figure) stays inset with the body copy.
+/* Bleeding media: an image keeps its own size, never upscaled. One narrower
+   than the text column lines up with the text's left edge; a wider one
+   spreads evenly into both margins, up to edge to edge, corners flush.
+   Inside a <figure> only the image bleeds, so the caption (and any loose
+   caption text the feed dropped inside the figure) stays inset with the body
+   copy. Substack nests its image as figure > a > div > picture > img, so the
+   figure's link is matched through to the image.
+
+   Each image starts at the left bleed edge and translates back toward the
+   text by half the room it leaves, capped at the bleed. A translate
+   percentage is the image's own width, so it is the one property that can
+   weigh that against the column's.
 
    A figure the feed floated for itself is excluded: it is a thumbnail set
    beside the copy, not a lede, and a float is sized to fit its contents, so
    a percentage width inside it is circular — WebKit resolves it to zero and
-   the image vanishes. See .articleBody figure[style*="float"] below. */
+   the image vanishes. See .articleBody figure[style*="float"] below. A Ghost
+   bookmark card is a figure wrapping a link too; see below. */
 .articleBody > img,
 .articleBody > a:only-child > img,
 .articleBody > p > img:only-child,
-.articleBody figure:not([style*="float"]) > img,
-.articleBody figure:not([style*="float"]) > a {
+.articleBody figure:not([style*="float"], .kg-bookmark-card) > img,
+.articleBody figure:not([style*="float"], .kg-bookmark-card) > a img {
 	display: block;
 	margin-left: calc(-1 * var(--ember-bleed));
-	margin-right: calc(-1 * var(--ember-bleed));
-	width: calc(100% + 2 * var(--ember-bleed));
-	/* Clamp rather than lifting the cap: a feed that writes its own inline
-	   pixel width (WordPress does on a resized image) overrides the width
-	   above, and with no max-width it would run past the viewport. Edge to
-	   edge is as wide as anything here is allowed to be. */
+	margin-right: auto;
+	/* A feed that writes its own pixel width (WordPress does on a resized
+	   image) can ask for more than fits; edge to edge is as wide as anything
+	   here is allowed to be. */
 	max-width: calc(100% + 2 * var(--ember-bleed));
-	/* The width already spans edge to edge; a link's inline padding (see
-	   .articleBody a) would push it past the viewport on iPhone. */
+	translate: clamp(0px, (var(--ember-column) + 2 * var(--ember-bleed) - 100%) / 2, var(--ember-bleed));
+	/* A link's inline padding (see .articleBody a) would push an edge-to-edge
+	   image past the viewport on iPhone. */
 	padding: 0;
 	border-radius: 0;
 }
 
-.articleBody figure:not([style*="float"]) > a > img {
-	width: 100%;
-	border-radius: 0;
+.articleBody figure:not([style*="float"], .kg-bookmark-card) > a {
+	display: block;
+	padding: 0;
 }
+
+/* Substack's restack and expand buttons under each image only work on
+   Substack. */
+.articleBody .image-link-expand { display: none; }
 
 /* A figure the feed floated itself (TidBITS's Watchlist icons): let it keep
    its own size and sit beside the copy. Cap it at a third of the column so a
@@ -524,9 +554,8 @@ figcaption {
 }
 
 /* Bookmark card: a link preview whose feed copy has no thumbnail or icon.
-   It is a figure wrapping a link, so the full-bleed figure rule above would
-   stretch it edge to edge as a line of small link text; keep it in the column
-   as a bordered card instead. */
+   It is a figure wrapping a link, which the bleeding-media rule above leaves
+   out; keep it in the column as a bordered card. */
 .articleBody figure.kg-bookmark-card {
 	font-size: 1em;
 }
