@@ -89,8 +89,9 @@ fixtures are captured from NetNewsWire with `npx nnw-theme@2 capture`.
 - Additional footnote popovers depend on NetNewsWire's **Article JavaScript**
   setting (enabled by default). Keep the adapter inline in `template.html`; `check`
   also renders with theme scripts removed to prove the article still reads well.
-- Both light and dark grounds are warm (not a naive inversion); the accent is
-  vermilion in light, a lighter coral in dark.
+- Ember is light only: there are no dark-mode rules and `color-scheme` is
+  `light`, so dark renders must look identical to light. The ground is warm and
+  the accent is NetNewsWire's default blue, `#086AEE`.
 - Commit messages are Conventional Commits; `.github/cliff.toml` turns them into
   the release notes, so the type prefix decides which section a change lands in
   (and `chore(release):` / `ci:` are omitted entirely).

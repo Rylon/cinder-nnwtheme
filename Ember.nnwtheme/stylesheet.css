@@ -5,16 +5,15 @@
    A theme's stylesheet.css fully REPLACES NetNewsWire's default
    stylesheet; only core.css is prepended automatically. So this file is
    self-contained: it starts from NNW's default scaffolding and layers on
-   Ember's design — Apple system fonts (SF Pro / SF), a warm vermilion
+   Ember's design — Apple system fonts (SF Pro / SF), a NetNewsWire blue
    accent, oversized headline type, a drop cap, flagged section heads,
-   and prominent pull-quotes. Light and dark are both first-class.
+   and prominent pull-quotes. Light only: dark mode is deliberately off.
    ===================================================================== */
 
 /* ---------- Palette ---------------------------------------------------
-   Warm off-white / warm charcoal grounds, warm-biased ink, and a
-   vermilion accent that shifts to a lighter coral in the dark so links
-   and marks keep their contrast. The --*-color names below are the ones
-   NNW's base rules reference; --ember-* are Ember's own tokens.
+   Warm off-white ground, warm-biased ink, and NetNewsWire's own blue
+   accent. The --*-color names below are the ones NNW's base rules
+   reference; --ember-* are Ember's own tokens.
 */
 
 :root {
@@ -22,16 +21,17 @@
 	--ember-ink:       #1B1714;
 	--ember-ink-soft:  #3B342E;
 	--ember-ink-mute:  #857B72;
-	--ember-accent:    #D6421F;
-	--ember-accent-2:  #A9310F;
+	--ember-accent:    #086AEE;
+	--ember-accent-2:  #0556C4;
 	--ember-surface:   #F2ECE4;
 	--ember-rule:      rgba(27, 23, 20, 0.10);
 	--ember-rule-2:    rgba(27, 23, 20, 0.16);
-	--ember-quote-bg:  rgba(214, 66, 31, 0.05);
+	--ember-quote-bg:  rgba(8, 106, 238, 0.05);
 	--ember-footnote-ink: #FFFFFF;
-	--ember-footnote-chip:      rgba(214, 66, 31, 0.14);
-	--ember-footnote-chip-edge: rgba(214, 66, 31, 0.28);
+	--ember-footnote-chip:      rgba(8, 106, 238, 0.14);
+	--ember-footnote-chip-edge: rgba(8, 106, 238, 0.28);
 	--ember-bleed:     0px; /* set to the body side padding per platform */
+	--ember-serif:     ui-serif, "New York", Georgia, serif;
 
 	--header-table-border-color: var(--ember-rule);
 	--header-color:              var(--ember-ink-mute);
@@ -42,31 +42,7 @@
 	--article-title-color:       var(--ember-ink);
 	--article-date-color:        var(--ember-accent);
 	--table-cell-border-color:   var(--ember-rule-2);
-	--sup-link-color:            rgba(255, 255, 255, 0.95);
-}
-
-@media (prefers-color-scheme: dark) {
-	:root {
-		--ember-bg:        #1A1613;
-		--ember-ink:       #ECE6DF;
-		--ember-ink-soft:  #CBC3BA;
-		--ember-ink-mute:  #9A9088;
-		--ember-accent:    #FF7A50;
-		--ember-accent-2:  #FF9670;
-		--ember-surface:   #2A2320;
-		--ember-rule:      rgba(236, 230, 223, 0.12);
-		--ember-rule-2:    rgba(236, 230, 223, 0.18);
-		--ember-quote-bg:  rgba(255, 122, 80, 0.08);
-		--ember-footnote-ink: #1A1613;
-		--ember-footnote-chip:      rgba(255, 122, 80, 0.18);
-		--ember-footnote-chip-edge: rgba(255, 122, 80, 0.36);
-
-		--header-color:              var(--ember-ink-mute);
-		--body-code-color:           var(--ember-ink);
-		--system-message-color:      #5f5f5f;
-		--article-title-color:       var(--ember-ink);
-		--table-cell-border-color:   var(--ember-rule-2);
-	}
+	--sup-link-color:            var(--ember-accent);
 }
 
 /* ---------- Base layout & canvas ------------------------------------ */
@@ -259,28 +235,11 @@ body .header a:link, .header a:visited {
 	padding: 0px 1px;
 }
 
-/* Drop cap on the opening paragraph. flow-root contains the floated cap within
-   the paragraph so a short opener (one line of text + a 3.5em cap) doesn't leak
-   the float onto the next block — otherwise a following pre, which is its own
-   BFC, dodges the cap and gets shoved right/narrowed or overlapped.
-
-   Not after a figure the feed floated itself (TidBITS's app icons): a flow-root
-   paragraph sits beside that float as a narrow column instead of wrapping under
-   it. There the paragraph stays a plain block, so the cap floats in beside the
-   icon and the text wraps under both. */
-.articleBody > p:first-of-type:not(figure[style*="float"] ~ p) { display: flow-root; }
-
-.articleBody > p:first-of-type::first-letter {
-	float: left;
-	font-size: 3.5em;
-	line-height: 0.78;
-	font-weight: 800;
-	margin: 0.02em 0.09em 0 0;
-	color: var(--ember-accent);
-	-webkit-hyphens: none;
+/* Headings set in Apple's New York serif against the sans body copy. */
+h1, h2, h3, h4, h5, h6 {
+	font-family: var(--ember-serif);
 }
 
-/* Section headings, flagged with a short accent bar */
 h1 {
 	line-height: 1.15em;
 	font-weight: bold;
@@ -289,29 +248,16 @@ h1 {
 }
 
 .articleBody h2, .articleBody h3 {
-	position: relative;
 	font-weight: 800;
 	letter-spacing: -0.02em;
 	line-height: 1.18;
 	margin-top: 1.9em;
 	margin-bottom: 0.45em;
-	padding-top: 0.62em;
 	color: var(--ember-ink);
 }
 
 .articleBody h2 { font-size: 1.5em; }
 .articleBody h3 { font-size: 1.22em; }
-
-.articleBody h2::before, .articleBody h3::before {
-	content: "";
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 2.1em;
-	height: 4px;
-	border-radius: 2px;
-	background: var(--ember-accent);
-}
 
 .articleBody h4, .articleBody h5, .articleBody h6 {
 	font-weight: 700;
@@ -330,18 +276,42 @@ blockquote {
 	padding: 0.7em 1.2em 0.7em 1.15em;
 	font-size: 1em;
 	line-height: 1.5;
-	font-weight: 500;
+	/* A serif sets the quoted voice apart from the author's sans. */
+	font-family: var(--ember-serif);
 	color: var(--ember-ink-soft);
 	border-inline-start: 4px solid var(--block-quote-border-color);
 	background: var(--ember-quote-bg);
 	border-radius: 0 6px 6px 0;
+	/* Contains the quote mark's float when the quote is a single line. */
+	display: flow-root;
 }
+
+/* An oversized opening quote mark the text wraps beside. The glyph's ink sits
+   in the top of its em box, so the float is cut to the ink's height; the full
+   box would hold the text off for a line of blank space. The empty
+   alternative text keeps screen readers from announcing it. A quote nested in
+   a quote is already marked by its parent. */
+blockquote::before {
+	content: "\201C";
+	content: "\201C" / "";
+	float: left;
+	height: 0.42em;
+	font-family: var(--ember-serif);
+	font-size: 3em;
+	line-height: 1;
+	font-weight: 800;
+	margin: -0.12em 0.1em 0 -0.03em;
+	color: var(--ember-accent);
+}
+
+blockquote blockquote::before { content: none; }
 
 blockquote p:last-child { margin-bottom: 0; }
 
 blockquote cite {
 	display: block;
 	margin-top: 0.5em;
+	font-family: -apple-system, system-ui, sans-serif;
 	font-size: 0.78em;
 	font-weight: 700;
 	font-style: normal;
@@ -363,9 +333,10 @@ body code, body pre {
 	color: var(--body-code-color);
 }
 
+/* Spaced like a paragraph; the margins collapse with a neighbouring one. */
 pre {
 	max-width: 100%;
-	margin: 0;
+	margin: 1.15em 0;
 	overflow: auto;
 	overflow-y: hidden;
 	word-wrap: normal;
@@ -418,7 +389,7 @@ pre code {
 
 .nnw-overflow tr :matches(td, th):last-child { border-right: none; }
 .nnw-overflow :matches(thead, tbody, tfoot):last-child > tr:last-child :matches(td, th) { border-bottom: none; }
-.nnw-overflow td pre { border: none; padding: 0; }
+.nnw-overflow td pre { border: none; padding: 0; margin: 0; }
 .nnw-overflow table[border="0"] { border-width: 0; }
 
 /* ---------- Media & figures ----------------------------------------- */
@@ -713,6 +684,53 @@ figcaption {
 	max-height: 80vh;
 }
 
+/* ---------- Jetpack Image Compare --------------------------------- */
+
+/* WordPress's Jetpack builds a before/after slider from two images, but its
+   script doesn't travel with the feed, so the images stack. Part them and
+   label each, so the pair still reads as a comparison. An image can't carry
+   pseudo-elements, so the labels are the wrapper's, placed as grid items
+   over each image's corner. */
+.articleBody .wp-block-jetpack-image-compare .juxtapose {
+	display: grid;
+	gap: 0.6em;
+}
+
+.articleBody .juxtapose > img {
+	grid-column: 1;
+	margin: 0;
+}
+
+.articleBody .juxtapose > .image-compare__image-before { grid-row: 1; }
+.articleBody .juxtapose > .image-compare__image-after  { grid-row: 2; }
+
+.articleBody .wp-block-jetpack-image-compare .juxtapose::before,
+.articleBody .wp-block-jetpack-image-compare .juxtapose::after {
+	grid-column: 1;
+	align-self: start;
+	justify-self: start;
+	z-index: 1;
+	margin: 0.8em;
+	padding: 0.35em 0.8em;
+	border-radius: 999px;
+	background: rgba(27, 23, 20, 0.72);
+	color: #FFFFFF;
+	font-size: 0.78em;
+	font-weight: 700;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+}
+
+.articleBody .wp-block-jetpack-image-compare .juxtapose::before {
+	content: "Before";
+	grid-row: 1;
+}
+
+.articleBody .wp-block-jetpack-image-compare .juxtapose::after {
+	content: "After";
+	grid-row: 2;
+}
+
 /* ---------- Rules, sup/sub ------------------------------------------ */
 
 hr {
@@ -837,8 +855,8 @@ body > .systemMessage { color: var(--system-message-color); }
 }
 
 /* Footnote list at the foot of the article: a flagged "Notes" apparatus.
-   Reuse Ember's section-head flag bar (short accent tick) for the trailing
-   rule, label the block, and demote the list so it reads as endmatter. */
+   Shorten the trailing rule to an accent tick, label the block, and demote
+   the list so it reads as endmatter. */
 .articleBody hr:has(+ ol) {
 	width: 2.1em;
 	height: 4px;
@@ -935,14 +953,14 @@ body > .systemMessage { color: var(--system-message-color); }
 	}
 
 	&:root {
-		color-scheme: light dark;
+		color-scheme: light;
 		font: -apple-system-body;
 		/* The font-size is replaced at runtime by the dynamic type size */
 		font-size: [[font-size]]px;
 		--primary-accent-color: var(--ember-accent);
 		--secondary-accent-color: var(--ember-accent);
 		--block-quote-border-color: var(--ember-accent);
-		--ios-hover-color: rgba(214, 66, 31, 0.12);
+		--ios-hover-color: rgba(8, 106, 238, 0.12);
 		--ember-bleed: 20px; /* matches iOS body side padding */
 	}
 
@@ -954,16 +972,6 @@ body > .systemMessage { color: var(--system-message-color); }
 	@media (min-width: 500px) {
 		&:root { font-size: calc([[font-size]]px * 1.2); }
 		& body .header { font-size: calc([[font-size]]px * 1.2); }
-	}
-
-	@media (prefers-color-scheme: dark) {
-		&:root {
-			--primary-accent-color: var(--ember-accent);
-			--secondary-accent-color: var(--ember-accent);
-			--block-quote-border-color: var(--ember-accent);
-			--header-table-border-color: var(--ember-rule);
-			--ios-hover-color: rgba(255, 122, 80, 0.18);
-		}
 	}
 
 	& body a, & body a:visited, & body a * {
@@ -1033,22 +1041,12 @@ body > .systemMessage { color: var(--system-message-color); }
 	& .xxLargeText, & .xxlargeText { font-size: 22px; }
 
 	&:root {
-		color-scheme: light dark;
+		color-scheme: light;
 		--accent-color: var(--ember-accent);
 		--block-quote-border-color: var(--ember-accent);
 		--hover-gradient-color-start: var(--ember-accent-2);
 		--hover-gradient-color-end: var(--ember-accent);
 		--ember-bleed: 48px; /* matches macOS body side padding */
-	}
-
-	@media (prefers-color-scheme: dark) {
-		&:root {
-			--accent-color: var(--ember-accent);
-			--block-quote-border-color: var(--ember-accent);
-			--header-table-border-color: var(--ember-rule);
-			--hover-gradient-color-start: var(--ember-accent-2);
-			--hover-gradient-color-end: var(--ember-accent);
-		}
 	}
 
 	& body a, & body a:visited, & body a * {

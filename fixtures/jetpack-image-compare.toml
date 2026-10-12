@@ -1,0 +1,25 @@
+# Jetpack Image Compare block (ryBlog's "A fresh coat of paint", from the
+# feed's content:encoded). On the web, Jetpack's script turns the two images
+# into a before/after slider; the feed carries no script, so they stack.
+# Preview with: npx nnw-theme@2 render jetpack-image-compare
+
+byline = 'Rylon'
+date_long = 'June 17, 2026'
+date_medium = 'Jun 17, 2026'
+date_short = '6/17/26'
+dateline_style = 'articleDateline'
+datetime_long = 'June 17, 2026 at 12:59:32 AM'
+datetime_medium = 'Jun 17, 2026 at 12:59 AM'
+datetime_short = '6/17/26, 12:59 AM'
+feed_link = 'https://rylon.dev/'
+feed_link_title = 'ryBlog'
+preferred_link = 'https://rylon.dev/2026/06/17/a-fresh-coat-of-paint/'
+text_size_class = 'mediumText'
+title = 'A fresh coat of paint'
+body = '''
+<p class="wp-block-paragraph">In the end I&#8217;m really happy with how everything has come together. I think it looks much better than the old design, and it feels like I&#8217;ve finally made the blog my own.</p>
+
+
+
+<figure class="wp-block-jetpack-image-compare"><div class="juxtapose" data-mode="horizontal"><img data-recalc-dims="1" loading="lazy" decoding="async" id="765" src="https://i0.wp.com/rylon.dev/wp-content/uploads/2026/06/before-1.png?resize=656%2C420&#038;ssl=1" alt="" width="656" height="420" class="image-compare__image-before"/><img data-recalc-dims="1" loading="lazy" decoding="async" id="766" src="https://i0.wp.com/rylon.dev/wp-content/uploads/2026/06/after-1.png?resize=656%2C420&#038;ssl=1" alt="" width="656" height="420" class="image-compare__image-after"/></div><figcaption>Before and after!</figcaption></figure>
+'''
