@@ -563,6 +563,27 @@ figure {
    text below, so it stays. */
 .articleBody .media-wrapper:has(+ h3) > p.image-caption:empty { display: none; }
 
+/* The same roundup through Miniflux, whose sanitizer drops the wrapper and
+   the caption's class: each icon is a bare image, an empty paragraph, then
+   the heading. A screenshot leaves the same pair before a paragraph instead.
+   That bare shape is common enough elsewhere that the rule also asks for
+   MacStories's image host. It undoes the bleed placement, which outranks the
+   float otherwise. */
+.articleBody > img[src*="cdn.macstories.net/"]:has(+ p:empty + h3) {
+	float: left;
+	clear: left;
+	width: 5.5em;
+	margin: 0 1em 0.5em 0;
+	translate: none;
+	border-radius: 22%;
+}
+
+.articleBody > img[src*="cdn.macstories.net/"]:has(+ p:empty + h3) + p:empty { display: none; }
+
+.articleBody > img[src*="cdn.macstories.net/"] + p:empty + h3 {
+	display: flow-root;
+}
+
 .articleBody figure > a,
 .articleBody figure > img {
 	margin-bottom: 0.7em;
