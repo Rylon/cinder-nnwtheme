@@ -520,6 +520,35 @@ figure {
 	max-width: 100%;
 }
 
+/* MacStories app icons: each app in a roundup opens with its icon in a
+   .media-wrapper right before the app's heading. The site floats it beside
+   the heading once its own script tags it .media-wrapper-icon, but the feed
+   carries neither the class (unless Article JavaScript runs that script) nor
+   the CSS, so the 512px icon stood column-wide. Float it here, keyed on the
+   structure; the heading becomes its own formatting context so its accent bar
+   starts beside the icon instead of under it. */
+.articleBody .media-wrapper:has(> img:only-of-type):has(+ h3) {
+	float: left;
+	clear: left;
+	width: 5.5em;
+	margin: 0 1em 0.5em 0;
+}
+
+.articleBody .media-wrapper:has(> img:only-of-type):has(+ h3) > img {
+	display: block;
+	width: 100%;
+	border-radius: 22%;
+}
+
+.articleBody .media-wrapper:has(> img:only-of-type) + h3 {
+	display: flow-root;
+}
+
+/* The empty caption paragraph MacStories leaves after every image would
+   lengthen the float; elsewhere its margin is what parts an image from the
+   text below, so it stays. */
+.articleBody .media-wrapper:has(+ h3) > p.image-caption:empty { display: none; }
+
 .articleBody figure > a,
 .articleBody figure > img {
 	margin-bottom: 0.7em;
