@@ -475,13 +475,17 @@ figure {
    A figure the feed floated for itself is excluded: it is a thumbnail set
    beside the copy, not a lede, and a float is sized to fit its contents, so
    a percentage width inside it is circular — WebKit resolves it to zero and
-   the image vanishes. See .articleBody figure[style*="float"] below. A Ghost
-   bookmark card is a figure wrapping a link too; see below. */
-.articleBody > img,
-.articleBody > a:only-child > img,
-.articleBody > p > img:only-child,
-.articleBody figure:not([style*="float"], .kg-bookmark-card) > img,
-.articleBody figure:not([style*="float"], .kg-bookmark-card) > a img {
+   the image vanishes. See .articleBody figure[style*="float"] below. So is an
+   image the feed floated itself (ZEIT ONLINE's thumbnails): the bleed margin
+   would move its float area into the margin while the translate drew it back
+   over the text. See .articleBody img[style*="float"] below; :where keeps the
+   exclusion from raising these selectors' specificity. A Ghost bookmark card
+   is a figure wrapping a link too; see below. */
+.articleBody > img:not(:where([style*="float"], [align="left" i], [align="right" i])),
+.articleBody > a:only-child > img:not(:where([style*="float"], [align="left" i], [align="right" i])),
+.articleBody > p > img:only-child:not(:where([style*="float"], [align="left" i], [align="right" i])),
+.articleBody figure:not([style*="float"], .kg-bookmark-card) > img:not(:where([style*="float"], [align="left" i], [align="right" i])),
+.articleBody figure:not([style*="float"], .kg-bookmark-card) > a img:not(:where([style*="float"], [align="left" i], [align="right" i])) {
 	display: block;
 	margin-left: calc(-1 * var(--ember-bleed));
 	margin-right: auto;
@@ -518,6 +522,16 @@ figure {
 .articleBody figure[style*="float"] :is(img, a > img) {
 	width: auto;
 	max-width: 100%;
+}
+
+/* An image the feed floated itself, by inline style or the old align
+   attribute (ZEIT ONLINE opens every item with a 148px thumbnail, wrapped in
+   a link, beside loose text): the same third-of-the-column cap as a floated
+   figure, its own inline margins for the side gap, and a little room below
+   so a line that wraps under it doesn't touch it. */
+.articleBody img:is([style*="float"], [align="left" i], [align="right" i]) {
+	max-width: 33%;
+	margin-bottom: 0.4em;
 }
 
 /* MacStories app icons: each app in a roundup opens with its icon in a
