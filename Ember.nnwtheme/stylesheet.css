@@ -274,10 +274,10 @@ blockquote {
 	margin-top: 1.7em;
 	margin-bottom: 1.7em;
 	padding: 0.7em 1.2em 0.7em 1.15em;
-	font-size: 1em;
-	line-height: 1.5;
 	/* A serif sets the quoted voice apart from the author's sans. */
 	font-family: var(--ember-serif);
+	font-size: 1em;
+	line-height: 1.66;
 	color: var(--ember-ink-soft);
 	border-inline-start: 4px solid var(--block-quote-border-color);
 	background: var(--ember-quote-bg);
