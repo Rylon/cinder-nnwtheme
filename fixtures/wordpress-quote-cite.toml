@@ -1,0 +1,31 @@
+# WordPress quote block whose citation is a bare link (ryBlog's "OrbStack",
+# from the feed's content:encoded). Ember sets a citation in uppercase for a
+# name; a URL in uppercase shouts.
+# Preview with: npx nnw-theme@2 render wordpress-quote-cite
+
+byline = 'Rylon'
+date_long = 'February 16, 2024'
+date_medium = 'Feb 16, 2024'
+date_short = '2/16/24'
+dateline_style = 'articleDateline'
+datetime_long = 'February 16, 2024 at 11:21:26 PM'
+datetime_medium = 'Feb 16, 2024 at 11:21 PM'
+datetime_short = '2/16/24, 11:21 PM'
+feed_link = 'https://rylon.dev/'
+feed_link_title = 'ryBlog'
+preferred_link = 'https://rylon.dev/2024/02/16/orbstack/'
+text_size_class = 'mediumText'
+title = 'OrbStack'
+body = '''
+<p class="wp-block-paragraph">Last year I wrote how I&#8217;d switched from Docker Desktop to <a href="https://rylon.dev/2023/02/02/switching-from-docker-desktop-to-colima/">Colima</a>, but later that same year I stumbled across a brand new solution that was in development, called <a href="https://orbstack.dev">OrbStack</a>. The author was pretty communicative on Mastodon and so I downloaded it during the beta to take it for a spin, and was immediately blown away.</p>
+
+
+
+<blockquote class="wp-block-quote is-layout-flow wp-block-quote-is-layout-flow">
+<p class="wp-block-paragraph">Containers should be a joy to use, not something you have to put up with. Let&#8217;s build the future of dev envs.</p>
+<cite><a href="https://twitter.com/kdrag0n/status/1750965469518176438">https://twitter.com/kdrag0n/status/1750965469518176438</a></cite></blockquote>
+
+
+
+<p class="wp-block-paragraph">So what makes it so special? Well let&#8217;s start with the performance. OrbStack is fast. How fast is it? Well I&#8217;ll let one of my Mastodon posts answer that question:</p>
+'''
