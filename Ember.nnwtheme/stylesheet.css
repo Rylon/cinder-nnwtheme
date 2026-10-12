@@ -320,6 +320,14 @@ blockquote cite {
 	color: var(--ember-ink-mute);
 }
 
+/* A citation that is only a link is usually a bare URL, which looks wrong when it's all in
+   uppercase. `:only-child` ignores text nodes, so a name followed by a linked publication
+	 is preserved too. */
+blockquote cite:has(> a:only-child) {
+	text-transform: none;
+	letter-spacing: 0;
+}
+
 /* ---------- Code ---------------------------------------------------- */
 
 code, pre {
