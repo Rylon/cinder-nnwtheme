@@ -478,14 +478,16 @@ figure {
    the image vanishes. See .articleBody figure[style*="float"] below. So is an
    image the feed floated itself (ZEIT ONLINE's thumbnails): the bleed margin
    would move its float area into the margin while the translate drew it back
-   over the text. See .articleBody img[style*="float"] below; :where keeps the
+   over the text. See .articleBody img[style*="float"] below. WordPress's
+   alignleft and alignright classes float the same way; see .alignleft
+   below. :where keeps the
    exclusion from raising these selectors' specificity. A Ghost bookmark card
    is a figure wrapping a link too; see below. */
-.articleBody > img:not(:where([style*="float"], [align="left" i], [align="right" i])),
-.articleBody > a:only-child > img:not(:where([style*="float"], [align="left" i], [align="right" i])),
-.articleBody > p > img:only-child:not(:where([style*="float"], [align="left" i], [align="right" i])),
-.articleBody figure:not([style*="float"], .kg-bookmark-card) > img:not(:where([style*="float"], [align="left" i], [align="right" i])),
-.articleBody figure:not([style*="float"], .kg-bookmark-card) > a img:not(:where([style*="float"], [align="left" i], [align="right" i])) {
+.articleBody > img:not(:where([style*="float"], [align="left" i], [align="right" i], .alignleft, .alignright)),
+.articleBody > a:only-child > img:not(:where([style*="float"], [align="left" i], [align="right" i], .alignleft, .alignright)),
+.articleBody > p > img:only-child:not(:where([style*="float"], [align="left" i], [align="right" i], .alignleft, .alignright)),
+.articleBody figure:not([style*="float"], .alignleft, .alignright, .kg-bookmark-card) > img:not(:where([style*="float"], [align="left" i], [align="right" i], .alignleft, .alignright)),
+.articleBody figure:not([style*="float"], .alignleft, .alignright, .kg-bookmark-card) > a img:not(:where([style*="float"], [align="left" i], [align="right" i], .alignleft, .alignright)) {
 	display: block;
 	margin-left: calc(-1 * var(--ember-bleed));
 	margin-right: auto;
@@ -500,7 +502,7 @@ figure {
 	border-radius: 0;
 }
 
-.articleBody figure:not([style*="float"], .kg-bookmark-card) > a {
+.articleBody figure:not([style*="float"], .alignleft, .alignright, .kg-bookmark-card) > a {
 	display: block;
 	padding: 0;
 }
@@ -532,6 +534,43 @@ figure {
 .articleBody img:is([style*="float"], [align="left" i], [align="right" i]) {
 	max-width: 33%;
 	margin-bottom: 0.4em;
+}
+
+/* WordPress floats by class, which its theme CSS styles and the feed leaves
+   behind: a classic-editor image inside a paragraph, a block image's figure,
+   or a classic captioned image's div (whose inline width the cap overrides).
+   The same third-of-the-column cap; the gap goes on the side facing the text. */
+.articleBody :is(img, figure, .wp-caption):is(.alignleft, .alignright) {
+	max-width: 33%;
+	margin-top: 0.3em;
+	margin-bottom: 0.7em;
+}
+
+/* Each clears an earlier float on its side, so a short paragraph's float
+   cannot hold the next one beside it and squeeze the copy between them. */
+.articleBody .alignleft {
+	float: left;
+	clear: left;
+	margin-right: 1.25em;
+}
+
+.articleBody .alignright {
+	float: right;
+	clear: right;
+	margin-left: 1.25em;
+}
+
+/* A short paragraph whose float runs past its text, followed straight away
+   by another float, would let the next block start beside the first float,
+   above its own image. Contain the float when another one follows; a float
+   followed by text is left to wrap. */
+.articleBody > p:has(> :is(.alignleft, .alignright)):has(+ :is(figure[style*="float"], .alignleft, .alignright, p:has(> :is(.alignleft, .alignright)))) {
+	display: flow-root;
+}
+
+.articleBody figure:is(.alignleft, .alignright) img {
+	width: auto;
+	max-width: 100%;
 }
 
 /* MacStories app icons: each app in a roundup opens with its icon in a
@@ -786,6 +825,70 @@ figcaption,
 	object-fit: cover;
 	margin: 0;
 	border-radius: 0;
+}
+
+/* WordPress gallery block: nested image figures that WordPress's block CSS
+   wraps into columns. Without it each stacked at full width. Lay them out like
+   a Ghost gallery: bled like a single image, three to a row (two when there
+   are only two, or the count a columns-N class asks for), the last row
+   filling its width, and each row cropped to its tallest image. The caption
+   stays inset with the body copy. The nested images opt out of the
+   single-image bleed, which this selector outranks. */
+.articleBody figure.wp-block-gallery.has-nested-images {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+	margin-left: calc(-1 * var(--ember-bleed));
+	margin-right: calc(-1 * var(--ember-bleed));
+	max-width: none;
+	--ember-gallery-columns: 3;
+}
+
+.articleBody figure.wp-block-gallery.has-nested-images:not(:has(> figure:nth-of-type(3))) { --ember-gallery-columns: 2; }
+.articleBody figure.wp-block-gallery.columns-1 { --ember-gallery-columns: 1; }
+.articleBody figure.wp-block-gallery.columns-2 { --ember-gallery-columns: 2; }
+.articleBody figure.wp-block-gallery.columns-3 { --ember-gallery-columns: 3; }
+.articleBody figure.wp-block-gallery.columns-4 { --ember-gallery-columns: 4; }
+.articleBody figure.wp-block-gallery.columns-5 { --ember-gallery-columns: 5; }
+.articleBody figure.wp-block-gallery.columns-6 { --ember-gallery-columns: 6; }
+
+.articleBody figure.wp-block-gallery.has-nested-images > figure {
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 calc((100% - (var(--ember-gallery-columns) - 1) * 6px) / var(--ember-gallery-columns));
+	min-width: 0;
+	margin: 0;
+}
+
+.articleBody figure.wp-block-gallery.has-nested-images > figure > :is(img, a) {
+	flex: 1 1 auto;
+	min-height: 0;
+	width: 100%;
+	max-width: 100%;
+	margin: 0;
+	translate: none;
+	padding: 0;
+	object-fit: cover;
+}
+
+/* A gallery linked to its media files nests each image in a link. */
+.articleBody figure.wp-block-gallery.has-nested-images > figure > a {
+	display: flex;
+}
+
+.articleBody figure.wp-block-gallery.has-nested-images > figure > a > img {
+	width: 100%;
+	max-width: 100%;
+	margin: 0;
+	translate: none;
+	object-fit: cover;
+}
+
+.articleBody figure.wp-block-gallery.has-nested-images > figcaption {
+	flex: 1 0 100%;
+	box-sizing: border-box;
+	padding-left: var(--ember-bleed);
+	padding-right: var(--ember-bleed);
 }
 
 /* Video card: keep a portrait clip (404 Media's are 1080×1920) from running
