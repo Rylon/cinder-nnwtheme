@@ -14,7 +14,7 @@ body = """
 ## Unreleased
 {% endif %}\
 {% for group, commits in commits | group_by(attribute="group") %}
-### {{ group | upper_first }}
+### {{ group | striptags | trim | upper_first }}
 {% for commit in commits %}\
 - {{ commit.message | upper_first }}
 {% endfor %}\
@@ -27,20 +27,22 @@ conventional_commits = true
 filter_unconventional = true
 split_commits = false
 # Group by commit type; drop noise. Unmatched conventional types fall through.
+# group_by sorts sections by name, so each group starts with a hidden
+# "<!-- NN -->" that sets the order (Features first); the body strips it.
 commit_parsers = [
-  { message = "^feat", group = "Features" },
-  { message = "^fix", group = "Bug Fixes" },
-  { message = "^perf", group = "Performance" },
-  { message = "^refactor", group = "Refactor" },
-  { message = "^style", group = "Styling" },
-  { message = "^test", group = "Testing" },
-  { message = "^docs", group = "Documentation" },
+  { message = "^feat", group = "<!-- 00 -->Features" },
+  { message = "^fix", group = "<!-- 01 -->Bug Fixes" },
+  { message = "^perf", group = "<!-- 02 -->Performance" },
+  { message = "^refactor", group = "<!-- 04 -->Refactor" },
+  { message = "^style", group = "<!-- 05 -->Styling" },
+  { message = "^test", group = "<!-- 07 -->Testing" },
+  { message = "^docs", group = "<!-- 06 -->Documentation" },
   { message = "^chore\\(release\\):", skip = true },
   { message = "^chore\\(deps\\)", skip = true },
-  { message = "^chore", group = "Miscellaneous" },
+  { message = "^chore", group = "<!-- 09 -->Miscellaneous" },
   { message = "^ci", skip = true },
-  { message = "^build", group = "Build" },
-  { body = ".*security", group = "Security" },
+  { message = "^build", group = "<!-- 08 -->Build" },
+  { body = ".*security", group = "<!-- 03 -->Security" },
 ]
 # Keep releases focused: skip anything tagged as a release-candidate/beta.
 skip_tags = "v.*-(alpha|beta|rc).*"
