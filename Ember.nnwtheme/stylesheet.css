@@ -267,10 +267,15 @@ body .header a:link, .header a:visited {
    Not after a figure the feed floated itself (TidBITS's app icons): a flow-root
    paragraph sits beside that float as a narrow column instead of wrapping under
    it. There the paragraph stays a plain block, so the cap floats in beside the
-   icon and the text wraps under both. */
-.articleBody > p:first-of-type:not(figure[style*="float"] ~ p) { display: flow-root; }
+   icon and the text wraps under both.
 
-.articleBody > p:first-of-type::first-letter {
+   The opening paragraph is the first one that is neither empty nor a
+   caption: an article can open on a captioned photo, and through Miniflux a
+   MacStories image is followed by its caption as a bare paragraph (or an
+   empty one), which must not take the cap. */
+.articleBody > p:not(:is(:empty, .ember-caption, .wp-caption-text, img[src*="cdn.macstories.net/"] + p)):not(p:not(:is(:empty, .ember-caption, .wp-caption-text, img[src*="cdn.macstories.net/"] + p)) ~ p):not(figure[style*="float"] ~ p) { display: flow-root; }
+
+.articleBody > p:not(:is(:empty, .ember-caption, .wp-caption-text, img[src*="cdn.macstories.net/"] + p)):not(p:not(:is(:empty, .ember-caption, .wp-caption-text, img[src*="cdn.macstories.net/"] + p)) ~ p)::first-letter {
 	float: left;
 	font-size: 3.5em;
 	line-height: 0.78;
@@ -632,14 +637,18 @@ figure {
    - figcaption (WordPress blocks, Ghost, Medium, Substack, Six Colors, Ars);
    - p.wp-caption-text, WordPress's classic-editor caption;
    - p.image-caption, MacStories's caption paragraph when it has text;
-   - p.ember-caption, the template's wrap of loose caption text after an image.
+   - p.ember-caption, the template's wrap of loose caption text after an image;
+   - the bare paragraph after a MacStories image through Miniflux, which
+     strips p.image-caption's class (the template also marks it .ember-caption,
+     for the credit; this keeps the look with Article JavaScript off).
    Set in the serif italic against the sans body, so a caption never reads as
    copy; the template sets a trailing credit apart in muted small caps.
    Only the caption shrinks: a figure also holds tables, embeds and cards,
    which keep the body size. A caption paragraph sits outside any figure, so
    it also sets its gap: snug under its image, a figure's margin after. */
 figcaption,
-.articleBody :is(.wp-caption-text, p.image-caption, .ember-caption) {
+.articleBody :is(.wp-caption-text, p.image-caption, .ember-caption),
+.articleBody > img[src*="cdn.macstories.net/"] + p:not(:empty) {
 	margin-top: 0.7em;
 	font-family: ui-serif, "New York", Georgia, serif;
 	font-style: italic;
@@ -648,7 +657,8 @@ figcaption,
 	color: var(--ember-ink-soft);
 }
 
-.articleBody :is(.wp-caption-text, p.image-caption, .ember-caption) {
+.articleBody :is(.wp-caption-text, p.image-caption, .ember-caption),
+.articleBody > img[src*="cdn.macstories.net/"] + p:not(:empty) {
 	margin-bottom: calc(1.6em / 0.86);
 }
 
@@ -668,7 +678,8 @@ figcaption,
 	margin-bottom: 1.6em;
 }
 
-.articleBody > img:has(+ .ember-caption) { margin-bottom: 0; }
+.articleBody > img:has(+ .ember-caption),
+.articleBody > img[src*="cdn.macstories.net/"]:has(+ p:not(:empty)) { margin-bottom: 0; }
 
 /* ---------- Ghost cards --------------------------------------------- */
 

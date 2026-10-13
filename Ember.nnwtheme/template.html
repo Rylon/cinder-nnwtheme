@@ -50,7 +50,8 @@ body: The body of the article.
 	Caption adapter. Ars Technica's feed reaches NetNewsWire in two broken shapes:
 	a bare image followed by loose caption text, which CSS cannot select, and a
 	figure that repeats its figcaption as loose text. Wrap the first in
-	p.ember-caption and drop the repeat; then set any trailing "Credit: …" apart
+	p.ember-caption and drop the repeat, and mark MacStories's caption once
+	Miniflux strips its class; then set any trailing "Credit: …" or "Source: …" apart
 	as span.ember-credit. Floated images are skipped: text beside them is copy.
 -->
 <script>
@@ -77,6 +78,12 @@ body: The body of the article.
 		img.after(caption);
 	}
 
+	// Miniflux strips MacStories's p.image-caption to a bare paragraph after
+	// the image; an empty one stays as it is.
+	for (const caption of article.querySelectorAll(":scope > img[src*='cdn.macstories.net/'] + p")) {
+		if (caption.textContent.trim()) caption.classList.add("ember-caption");
+	}
+
 	for (const caption of article.querySelectorAll("figure > figcaption")) {
 		const loose = [...caption.parentNode.childNodes].filter(n => n.nodeType === Node.TEXT_NODE);
 		const text = squash(loose.map(t => t.textContent).join(""));
@@ -85,14 +92,16 @@ body: The body of the article.
 		}
 	}
 
-	for (const caption of article.querySelectorAll("figcaption, .ember-caption, .wp-caption-text")) {
-		if (caption.children.length) continue;
-		const match = squash(caption.textContent).match(/^(.*?)\s*(Credit:\s*.+)$/);
-		if (!match) continue;
+	for (const caption of article.querySelectorAll("figcaption, .ember-caption, .wp-caption-text, .image-caption")) {
+		// The credit runs from its label to the caption's end, links included.
+		const label = /\b(?:Credit|Source):/;
+		const start = [...caption.childNodes].find(n => n.nodeType === Node.TEXT_NODE && label.test(n.textContent));
+		if (!start) continue;
+		const rest = start.splitText(start.textContent.search(label));
 		const credit = document.createElement("span");
 		credit.className = "ember-credit";
-		credit.textContent = match[2];
-		caption.replaceChildren(...(match[1] ? [match[1], " "] : []), credit);
+		rest.before(credit);
+		while (credit.nextSibling) credit.append(credit.nextSibling);
 	}
 })();
 </script>
