@@ -47,6 +47,57 @@ body: The body of the article.
 </article>
 
 <!--
+	Caption adapter. Ars Technica's feed reaches NetNewsWire in two broken shapes:
+	a bare image followed by loose caption text, which CSS cannot select, and a
+	figure that repeats its figcaption as loose text. Wrap the first in
+	p.ember-caption and drop the repeat; then set any trailing "Credit: …" apart
+	as span.ember-credit. Floated images are skipped: text beside them is copy.
+-->
+<script>
+(() => {
+	const article = document.querySelector(".articleBody");
+	if (!article) return;
+	const squash = text => text.replace(/\s+/g, " ").trim();
+	const blocks = /^(P|H[1-6]|IMG|FIGURE|BLOCKQUOTE|UL|OL|PRE|TABLE|HR|DIV)$/;
+
+	for (const img of article.querySelectorAll(":scope > img:not([style*='float'], [align])")) {
+		const texts = [];
+		let node = img.nextSibling;
+		while (node && node.nodeType === Node.TEXT_NODE) {
+			texts.push(node);
+			node = node.nextSibling;
+		}
+		if (node && !blocks.test(node.nodeName)) continue;
+		const text = squash(texts.map(t => t.textContent).join(" "));
+		if (!text || text.length > 600) continue;
+		const caption = document.createElement("p");
+		caption.className = "ember-caption";
+		caption.textContent = text;
+		for (const t of texts) t.remove();
+		img.after(caption);
+	}
+
+	for (const caption of article.querySelectorAll("figure > figcaption")) {
+		const loose = [...caption.parentNode.childNodes].filter(n => n.nodeType === Node.TEXT_NODE);
+		const text = squash(loose.map(t => t.textContent).join(""));
+		if (text && text.replace(/\s/g, "") === caption.textContent.replace(/\s/g, "")) {
+			for (const t of loose) t.remove();
+		}
+	}
+
+	for (const caption of article.querySelectorAll("figcaption, .ember-caption, .wp-caption-text")) {
+		if (caption.children.length) continue;
+		const match = squash(caption.textContent).match(/^(.*?)\s*(Credit:\s*.+)$/);
+		if (!match) continue;
+		const credit = document.createElement("span");
+		credit.className = "ember-credit";
+		credit.textContent = match[2];
+		caption.replaceChildren(...(match[1] ? [match[1], " "] : []), credit);
+	}
+})();
+</script>
+
+<!--
 	NetNewsWire themes cannot bundle a separate JavaScript file. This inline adapter
 	normalizes common footnote markup to the .footnote + local-target convention
 	understood by NetNewsWire's built-in newsfoot popover script.

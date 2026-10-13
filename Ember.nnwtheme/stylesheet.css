@@ -589,22 +589,47 @@ figure {
 	margin-bottom: 0.7em;
 }
 
-/* Caption text and any loose text node inside a figure: keep it readable
-   and aligned with the body, slightly separated from the full-bleed image. */
-.articleBody figure {
-	font-size: 0.82em;
-	line-height: 1.4;
+/* Every caption shape gets one look:
+   - figcaption (WordPress blocks, Ghost, Medium, Substack, Six Colors, Ars);
+   - p.wp-caption-text, WordPress's classic-editor caption;
+   - p.image-caption, MacStories's caption paragraph when it has text;
+   - p.ember-caption, the template's wrap of loose caption text after an image.
+   Set in the serif italic against the sans body, so a caption never reads as
+   copy; the template sets a trailing credit apart in muted small caps.
+   Only the caption shrinks: a figure also holds tables, embeds and cards,
+   which keep the body size. A caption paragraph sits outside any figure, so
+   it also sets its gap: snug under its image, a figure's margin after. */
+figcaption,
+.articleBody :is(.wp-caption-text, p.image-caption, .ember-caption) {
+	margin-top: 0.7em;
+	font-family: ui-serif, "New York", Georgia, serif;
+	font-style: italic;
+	font-size: 0.86em;
+	line-height: 1.45;
+	color: var(--ember-ink-soft);
+}
+
+.articleBody :is(.wp-caption-text, p.image-caption, .ember-caption) {
+	margin-bottom: calc(1.6em / 0.86);
+}
+
+.ember-credit {
+	display: block;
+	margin-top: 0.15em;
+	font-style: normal;
+	font-variant-caps: all-small-caps;
+	letter-spacing: 0.04em;
 	color: var(--ember-ink-mute);
 }
 
-figcaption {
-	margin-top: 0.7em;
-	font-size: 1em;
-	line-height: 1.4;
-	color: var(--ember-ink-mute);
-	border-top: 1px solid var(--ember-rule);
-	padding-top: 0.55em;
+.articleBody .wp-caption-text { margin-bottom: 0; }
+
+.articleBody .wp-caption {
+	margin-top: 1.6em;
+	margin-bottom: 1.6em;
 }
+
+.articleBody > img:has(+ .ember-caption) { margin-bottom: 0; }
 
 /* ---------- Ghost cards --------------------------------------------- */
 
@@ -620,10 +645,6 @@ figcaption {
 /* Bookmark card: a link preview whose feed copy has no thumbnail or icon.
    It is a figure wrapping a link, which the bleeding-media rule above leaves
    out; keep it in the column as a bordered card. */
-.articleBody figure.kg-bookmark-card {
-	font-size: 1em;
-}
-
 .articleBody figure.kg-bookmark-card > a.kg-bookmark-container {
 	display: block;
 	margin: 0;
