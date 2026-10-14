@@ -4,13 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ember — a NetNewsWire theme</title>
-<meta name="description" content="Ember is a warm, editorial theme for NetNewsWire using Apple system fonts with a vermilion accent, big headline type, drop caps, and full-bleed images. Light and dark, macOS · iOS · iPadOS.">
+<meta name="description" content="Ember is a warm, editorial theme for NetNewsWire: Apple system fonts, a vermilion accent, big headlines, drop caps, serif-italic captions, and footnote popovers. Light and dark, macOS · iOS · iPadOS.">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta property="og:title" content="Ember — a NetNewsWire theme">
 <meta property="og:description" content="A warm, editorial theme for NetNewsWire. Apple system fonts, vermilion accent, light & dark. macOS · iOS · iPadOS.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://ember.marquard.org/">
-<meta property="og:image" content="https://ember.marquard.org/assets/ember-macos-light.png">
+<meta property="og:image" content="https://ember.marquard.org/assets/social-card.png">
+<meta property="og:image:width" content="1280">
+<meta property="og:image:height" content="640">
+<meta property="og:image:alt" content="Ember, a warm, editorial theme for NetNewsWire, shown on a Mac in light mode and an iPhone in dark mode.">
 <meta name="twitter:card" content="summary_large_image">
 <style>
   :root{
@@ -67,33 +70,41 @@
      position:relative; padding-top:16px;}
   h2::before{content:""; position:absolute; top:0; left:0; width:34px; height:4px;
      border-radius:2px; background:var(--accent);}
-  .lede{color:var(--mute); margin:0 0 26px; max-width:60ch;}
+  .lede{color:var(--mute); margin:0 0 26px; max-width:72ch;}
+  .lede.wide{max-width:none;}
 
-  /* Screenshot grids */
-  .shots{display:grid; gap:22px;}
-  .shots.mac{grid-template-columns:repeat(2,1fr);}
-  .shots.phone{grid-template-columns:repeat(2,minmax(0,340px)); justify-content:center;}
-  figure.shot{margin:0;}
-  figure.shot img{
-    width:100%; height:auto; display:block; border-radius:14px;
-    border:1px solid var(--rule); box-shadow:0 2px 4px rgba(0,0,0,.05),0 16px 40px rgba(0,0,0,.10);
-  }
-  figure.shot figcaption{
-    margin-top:10px; text-align:center; font-size:13px; font-weight:600;
-    letter-spacing:.05em; text-transform:uppercase; color:var(--mute);
-  }
-  @media (max-width:640px){
-    .shots.mac, .shots.phone{grid-template-columns:1fr;}
-    .shots.phone{max-width:340px; margin:0 auto;}
-  }
+  /* Hero image: the marketplace card, light and dark split on a diagonal */
+  .hero-shot{max-width:880px; margin:48px auto 0;}
+  .hero-shot img{width:100%; height:auto; display:block; border-radius:16px;
+    border:1px solid var(--rule); box-shadow:0 2px 4px rgba(0,0,0,.05),0 24px 60px rgba(0,0,0,.14);}
 
-  /* Features — a trailing partial row centers instead of hanging left. */
-  .features{display:flex; flex-wrap:wrap; justify-content:center; gap:20px; margin-top:8px;}
-  .features .feature{flex:1 1 calc((100% - 40px)/3); min-width:min(260px,100%); max-width:calc((100% - 40px)/3);}
-  @media (max-width:720px){ .features .feature{flex-basis:100%; max-width:100%;} }
-  .feature{background:var(--card); border:1px solid var(--rule); border-radius:14px; padding:20px 22px;}
-  .feature h3{margin:0 0 6px; font-size:16.5px; font-weight:700; letter-spacing:-.01em;}
-  .feature p{margin:0; color:var(--mute); font-size:14.5px;}
+  /* Feature tiles: each a crop of the same article, in the visitor's appearance */
+  .tiles{display:grid; grid-template-columns:repeat(2,1fr); gap:40px 32px;}
+  @media (max-width:640px){ .tiles{grid-template-columns:1fr;} }
+  .tile{margin:0;}
+  .tile img{width:100%; height:auto; aspect-ratio:8/5; display:block; border-radius:12px;
+    border:1px solid var(--rule); box-shadow:0 1px 3px rgba(0,0,0,.05),0 10px 28px rgba(0,0,0,.08);}
+  .tile h3{margin:16px 0 4px; font-size:17px; font-weight:700; letter-spacing:-.01em;}
+  .tile p{margin:0; color:var(--mute); font-size:14.5px; line-height:1.55;}
+
+  /* The rest, as a quiet list */
+  .more{display:grid; grid-template-columns:repeat(2,1fr); gap:6px 40px; margin:40px 0 0; padding:0; list-style:none;}
+  @media (max-width:640px){ .more{grid-template-columns:1fr;} }
+  .more li{padding:12px 0; border-top:1px solid var(--rule); color:var(--mute); font-size:14.5px;}
+  .more strong{color:var(--ink); font-weight:650;}
+
+  /* Devices */
+  .devices{display:flex; align-items:flex-end; justify-content:center; gap:24px;}
+  .devices figure{margin:0;}
+  .devices .mac{flex:1 1 52%;}
+  .devices .ipad{flex:0 1 27%;}
+  .devices .phone{flex:0 1 15%;}
+  .devices img{width:100%; height:auto; display:block; border:1px solid var(--rule);
+    box-shadow:0 2px 4px rgba(0,0,0,.05),0 16px 40px rgba(0,0,0,.12);}
+  .devices .mac img{border-radius:12px;}
+  .devices .ipad img{border-radius:18px;}
+  .devices .phone img{border-radius:26px;}
+  .devices figcaption{margin-top:10px; text-align:center; font-size:14px; font-weight:600; color:var(--mute);}
 
   /* Install */
   ol.steps{padding-left:0; list-style:none; counter-reset:s; max-width:70ch;}
@@ -124,7 +135,7 @@
       <svg viewBox="0 0 64 64"><path d="M32 13c3 7-4 9-4 15 0 3 2 5 4 5s4-2 4-5c0-1 0-2-1-3 4 2 6 6 6 10 0 6-4 10-9 10s-10-4-10-11c0-9 7-13 10-26z" fill="#FFE9C9"/></svg>
     </div>
     <h1>Ember</h1>
-    <p class="tagline">A warm, editorial theme for NetNewsWire that feels like a magazine using Apple system fonts, drop caps, and big headlines.</p>
+    <p class="tagline">A warm, editorial theme for NetNewsWire that reads like a magazine, with big headlines and drop caps in Apple’s own fonts.</p>
     <p class="meta">macOS · iOS · iPadOS &nbsp;•&nbsp; Light &amp; Dark</p>
     <div class="cta">
       <a class="btn btn-primary" href="netnewswire://theme/add?url=https%3A%2F%2Fgithub.com%2Fdave-atx%2Fember-nnw-theme%2Freleases%2Flatest%2Fdownload%2FEmber.nnwtheme.zip">Install in NetNewsWire</a>
@@ -132,42 +143,39 @@
       <a class="btn btn-ghost" href="https://github.com/dave-atx/ember-nnw-theme">View on GitHub</a>
     </div>
     <p class="version" id="version"></p>
+    <div class="hero-shot"><img src="assets/ember-hero.webp" alt="An article in Ember, split diagonally between light and dark mode: a bold headline, vermilion dateline, drop cap, and a photo of a Martian landscape." width="1600" height="1104"></div>
   </div>
 </header>
 
 <section>
   <div class="wrap">
-    <h2>On the Mac</h2>
-    <p class="lede">Generous type, full-bleed imagery, and a confident headline scale.</p>
-    <div class="shots mac">
-      <figure class="shot"><picture><source srcset="assets/ember-macos-light.webp" type="image/webp"><img src="assets/ember-macos-light.png" alt="Ember theme on macOS, light mode" loading="lazy"></picture><figcaption>Light</figcaption></figure>
-      <figure class="shot"><picture><source srcset="assets/ember-macos-dark.webp" type="image/webp"><img src="assets/ember-macos-dark.png" alt="Ember theme on macOS, dark mode" loading="lazy"></picture><figcaption>Dark</figcaption></figure>
+    <h2>The details</h2>
+    <p class="lede wide">Every screenshot below is the same article in Ember, shown in whichever appearance (light or dark) your system is using.</p>
+    <div class="tiles">
+      <figure class="tile"><picture><source srcset="assets/features/opener-dark.webp" media="(prefers-color-scheme: dark)"><img src="assets/features/opener-light.webp" alt="The opening of an article in Ember: a feed name and byline, a large bold headline, a vermilion dateline, and a drop cap." width="960" height="600" loading="lazy"></picture><h3>Big headlines and a drop cap</h3><p>Headlines get a big, heavy type scale, and the first paragraph opens with an oversized vermilion capital.</p></figure>
+      <figure class="tile"><picture><source srcset="assets/features/caption-dark.webp" media="(prefers-color-scheme: dark)"><img src="assets/features/caption-light.webp" alt="A photo with its caption in serif italic and a credit line in small caps beneath it." width="960" height="600" loading="lazy"></picture><h3>Captions set apart</h3><p>Captions are set in serif italic so they don’t read as body text, with photo credits in small caps. Works with WordPress, Ghost, Substack, Medium, etc.</p></figure>
+      <figure class="tile"><picture><source srcset="assets/features/quote-dark.webp" media="(prefers-color-scheme: dark)"><img src="assets/features/quote-light.webp" alt="A pull-quote in a tinted panel with an accent rule, followed by a section heading flagged with a short accent bar." width="960" height="600" loading="lazy"></picture><h3>Pull-quotes and section headings</h3><p>Quotes sit in a tinted panel with an accent rule. A short accent bar marks each section heading, which makes long articles easier to scan.</p></figure>
+      <figure class="tile"><picture><source srcset="assets/features/footnote-dark.webp" media="(prefers-color-scheme: dark)"><img src="assets/features/footnote-light.webp" alt="A footnote popover open beneath the paragraph that cites it, showing the note text." width="960" height="600" loading="lazy"></picture><h3>Footnotes that open in place</h3><p>Tap a footnote marker to read the note in a popover instead of jumping to the bottom of the article. Works with Markdown and Substack footnotes, plus about a dozen WordPress plugins.</p></figure>
+      <figure class="tile"><picture><source srcset="assets/features/notes-dark.webp" media="(prefers-color-scheme: dark)"><img src="assets/features/notes-light.webp" alt="A section heading and paragraph, then the footnote list under an accent-colored “Notes” label." width="960" height="600" loading="lazy"></picture><h3>A quieter Notes section</h3><p>The footnote list gets a Notes label and smaller, muted type, so it stays out of the way at the end of the article.</p></figure>
+      <figure class="tile"><img src="assets/features/modes.webp" alt="A pull-quote and section heading split diagonally: light mode on the left, dark mode on the right." width="960" height="600" loading="lazy"><h3>Light and dark, both warm</h3><p>Both modes use a warm background. The accent is vermilion in light mode and a lighter coral in dark mode.</p></figure>
     </div>
+    <ul class="more">
+      <li><strong>Apple system fonts.</strong> SF Pro and New York, so there’s nothing to download and text stays sharp at any size.</li>
+      <li><strong>Images at their own size.</strong> Wide photos span the column; small ones never get upscaled.</li>
+      <li><strong>Real-world feeds.</strong> Ghost cards, WordPress galleries, MacStories app icons, etc lay out the way the publisher meant them to.</li>
+      <li><strong>Tuned per platform.</strong> Follows Dynamic Type on iPhone and iPad (with a larger default on iPad). The Mac gets its own type scale.</li>
+    </ul>
   </div>
 </section>
 
 <section>
   <div class="wrap">
-    <h2>On iPhone &amp; iPad</h2>
-    <p class="lede">The same design, tuned for touch — Dynamic Type on iPhone, larger default sizing on iPad.</p>
-    <div class="shots phone">
-      <figure class="shot"><picture><source srcset="assets/ember-ios-light.webp" type="image/webp"><img src="assets/ember-ios-light.png" alt="Ember theme on iOS, light mode" loading="lazy"></picture><figcaption>Light</figcaption></figure>
-      <figure class="shot"><picture><source srcset="assets/ember-ios-dark.webp" type="image/webp"><img src="assets/ember-ios-dark.png" alt="Ember theme on iOS, dark mode" loading="lazy"></picture><figcaption>Dark</figcaption></figure>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <h2>What's inside</h2>
-    <div class="features">
-      <div class="feature"><h3>Apple system fonts</h3><p>SF Pro throughout — no downloads, crisp at every size, native on every device.</p></div>
-      <div class="feature"><h3>Warm vermilion accent</h3><p>An editorial accent that shifts to a lighter coral in the dark so it always reads clearly.</p></div>
-      <div class="feature"><h3>Drop cap &amp; big headlines</h3><p>An oversized opening capital and a confident title scale set an unmistakable tone.</p></div>
-      <div class="feature"><h3>Flagged section heads</h3><p>A short accent bar marks each section — structure you can scan.</p></div>
-      <div class="feature"><h3>Full-bleed images</h3><p>Photos span the full column edge-to-edge, with captions kept neatly inset.</p></div>
-      <div class="feature"><h3>Light &amp; dark, done right</h3><p>Both themes are designed, not inverted — with a warm ground on either side.</p></div>
-      <div class="feature"><h3>Footnotes that just work</h3><p>Tap-to-read popovers for Markdown, Substack, and a dozen WordPress plugins — far past the default.</p></div>
+    <h2>On every screen</h2>
+    <p class="lede">The same design everywhere NetNewsWire runs.</p>
+    <div class="devices">
+      <figure class="mac"><picture><source srcset="assets/devices/mac-dark.webp" media="(prefers-color-scheme: dark)"><img src="assets/devices/mac-light.webp" alt="Ember on a Mac, showing the article’s headline, drop cap, and lead photo." width="1600" height="1000" loading="lazy"></picture><figcaption>macOS</figcaption></figure>
+      <figure class="ipad"><picture><source srcset="assets/devices/ipad-dark.webp" media="(prefers-color-scheme: dark)"><img src="assets/devices/ipad-light.webp" alt="Ember on an iPad, showing the article with a wider column and larger type." width="1000" height="1333" loading="lazy"></picture><figcaption>iPadOS</figcaption></figure>
+      <figure class="phone"><picture><source srcset="assets/devices/iphone-dark.webp" media="(prefers-color-scheme: dark)"><img src="assets/devices/iphone-light.webp" alt="Ember on an iPhone, showing the same article sized for a phone." width="786" height="1704" loading="lazy"></picture><figcaption>iOS</figcaption></figure>
     </div>
   </div>
 </section>
@@ -186,6 +194,7 @@
 <footer>
   <div class="wrap">
     Ember — a NetNewsWire theme by <a href="https://marquard.org/">Dave Marquard</a>.<br>
+    Photographs in the screenshots: NASA/JPL-Caltech/MSSS.<br>
     Open source under the <a href="https://github.com/dave-atx/ember-nnw-theme/blob/main/LICENSE">Apache 2.0</a> license · <a href="https://github.com/dave-atx/ember-nnw-theme">Source on GitHub</a>
   </div>
 </footer>
