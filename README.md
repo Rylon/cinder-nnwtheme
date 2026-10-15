@@ -1,57 +1,52 @@
-<!-- nnw-theme-identity:start -->
-# Ember — a NetNewsWire theme
+# Cinder, a NetNewsWire theme
 
-A warm, editorial theme for [NetNewsWire](https://netnewswire.com) using Apple system
-fonts with a vermilion accent, big headline type, a drop cap, serif-italic captions,
-and full-bleed images. Designed for **macOS, iOS, and iPadOS**, with first-class light
-and dark modes.
+A calm, light-mode only reading theme for [NetNewsWire](https://netnewswire.com).
 
-**→ [ember.marquard.org](https://ember.marquard.org)**
+Cinder is a restyle of the excellent [Ember](https://ember.marquard.org/) by Dave Marquard. Ember is warm and fiery; Cinder is what's left once the fire has cooled.
 
 <p align="center">
-  <img src="screenshots/theme-preview.png" width="720" alt="An article in Ember, split diagonally between light and dark mode: a bold headline, vermilion dateline, drop cap, and a photo of a Martian landscape">
+  <img src="screenshots/theme-preview.png" width="720" alt="An article in Cinder: a bold serif headline, a blue dateline, and a quotation in serif type with an oversized blue opening quote mark">
 </p>
+
+## Why?
+
+I really like dark-mode for my operating system chrome, but I prefer the content itself to be in light-mode. I couldn't find a way to configure this in NetNewsWire directly, but [it was recommended](https://discourse.netnewswire.com/t/force-light-mode-or-dark-mode/421) that I simply modify a theme I liked so it only had a light-mode, and so here we are!
 
 ## Install
 
-**One click.** On your Mac, iPhone, or iPad, open **[ember.marquard.org](https://ember.marquard.org)**
-and tap **Install in NetNewsWire**. NetNewsWire opens and offers to add Ember.
+Download the latest [`Cinder.nnwtheme.zip`](https://github.com/Rylon/cinder-nnwtheme/releases/latest):
 
-> The install button uses NetNewsWire's `netnewswire://theme/add` URL scheme. GitHub
-> strips custom-scheme links from rendered Markdown, so the working button lives on the
-> site rather than in this README.
+- **macOS:** unzip and double-click `Cinder.nnwtheme`, then confirm the install.
+- **iOS / iPadOS:** open the `.zip` and share it to NetNewsWire.
 
-**Manually.** Download the latest [`Ember.nnwtheme.zip`](https://github.com/dave-atx/ember-nnw-theme/releases/latest):
+Then choose **Cinder** as your article theme in NetNewsWire's settings.
 
-- **macOS** — unzip and double-click `Ember.nnwtheme`; confirm the install.
-- **iOS / iPadOS** — open the `.zip` and share it to NetNewsWire.
+## What Cinder changes
 
-Then choose **Ember** as your article theme in NetNewsWire's settings.
+- **Light only, in NetNewsWire's blue.** A warm off-white ground with NetNewsWire's default accent, `#086AEE`. Dark mode is deliberately switched off, so articles look the same whatever the system appearance.
+- **Serif headings and quotations.** Headings and quoted text are set in Apple's New York serif against the SF Pro body, so a quotation reads as a different voice.
+- **Quotation marks on quotes.** Each quotation opens with an oversized blue quote mark beside the text.
+- **Citation links.** When a citation contains only a bare hyperlink, it is no longer uppercased, as uppercase hyperlinks look weird.
+- **Quieter openings.** No drop cap and no accent bars over section headings.
+- **Spaced code blocks.** Code blocks get the same space around them as a paragraph.
+- **WordPress image comparison support.** WordPress (Jetpack)'s before/after slider doesn't work over RSS, so we show both images stacked and labelled **Before** and **After**.
 
-## Features
+## Kept from Ember
+
+All the other excellent features of Ember are still present:
 
 - **Apple system fonts** (SF Pro) throughout — nothing to download, crisp at every size.
-- **Warm vermilion accent** that shifts to a lighter coral in dark mode for legibility.
-- **Drop cap** on the opening paragraph and a confident headline scale.
-- **Flagged section headings** — a short accent bar marks each `<h2>`/`<h3>`.
 - **Prominent pull-quotes** with a tinted panel and accent rule.
 - **Full-bleed images** that span the column edge-to-edge, captions kept inset.
 - **Captions set apart** in serif italic, with photo credits in muted small caps.
-- **Broader footnote support** with native-style popovers for common Markdown,
-  Substack, and WordPress footnote formats.
-- **Designed light and dark** — both grounds are warm, not a naive inversion.
-- **Platform-tuned** — Dynamic Type on iOS, a larger default size on iPad, and a
-  desktop type scale on macOS.
+- **Broader footnote support** with native-style popovers for common Markdown, Substack, and WordPress footnote formats.
+- **Platform-tuned** — Dynamic Type on iOS, a larger default size on iPad, and a desktop type scale on macOS.
 
 ## Requirements
 
-A recent version of NetNewsWire (which supports custom `.nnwtheme` themes) on macOS,
-iOS, or iPadOS.
+A recent version of NetNewsWire (which supports custom `.nnwtheme` themes) on macOS, iOS, or iPadOS.
 
-Ember's additional footnote formats require NetNewsWire's **Article JavaScript**
-setting, which is enabled by default. If it is disabled, Ember still renders normally,
-but only the footnote formats recognized directly by that NetNewsWire version receive
-interactive popovers.
+The additional footnote formats need NetNewsWire's **Article JavaScript** setting, which is on by default. With it off, Cinder still renders normally, but only the footnote formats NetNewsWire recognises itself get popovers.
 
 ## Structure
 
@@ -59,25 +54,19 @@ An `.nnwtheme` bundle is three files. NetNewsWire always loads its own `core.css
 first, then a theme's `stylesheet.css` (which fully replaces the default stylesheet).
 
 ```
-Ember.nnwtheme/
+Cinder.nnwtheme/
 ├── Info.plist       theme name, identifier, author, version
 ├── template.html    the article scaffold, plus the inline footnote adapter
 └── stylesheet.css   the theme (self-contained; replaces the default)
 ```
 
-The `docs/` folder is the [project site](https://ember.marquard.org) served via GitHub
-Pages.
-
 ## Developing & testing
 
-Ember uses [nnw-theme](https://github.com/dave-atx/nnw-theme), the tooling behind
-[netnewswire-theme-template](https://github.com/dave-atx/netnewswire-theme-template):
-it renders each article through NetNewsWire's own pipeline (its pinned `core.css`,
-page skeletons, and scripts) and checks the result in WebKit, so layout work needs
-neither the app nor a NetNewsWire checkout.
+Cinder uses [nnw-theme](https://github.com/dave-atx/nnw-theme), the tooling behind [netnewswire-theme-template](https://github.com/dave-atx/netnewswire-theme-template).
 
-**Requirements:** Node.js 24 or later (`brew install node` on macOS). Capturing new
-fixtures from the running app additionally needs Xcode and a NetNewsWire clone.
+It renders each article through NetNewsWire's own pipeline (its pinned `core.css`, page skeletons, and scripts) and checks the result in WebKit, so layout work needs neither the app nor a NetNewsWire checkout.
+
+**Requirements:** Node.js 24 or later (`brew install node` on macOS). Capturing new fixtures from the running app also needs Xcode and a NetNewsWire clone.
 
 ```sh
 npx nnw-theme@2 setup      # once: install WebKit
@@ -85,27 +74,17 @@ npx nnw-theme@2 preview    # live gallery of every fixture; rebuilds on save
 npx nnw-theme@2 check      # release gate: every fixture in WebKit, light and dark
 ```
 
-Test cases are TOML fixtures in `fixtures/` whose keys mirror the `[[variables]]` in
-`template.html`; the tool's built-in `article` and `kitchen-sink` fixtures render
-alongside them. `npx nnw-theme@2 capture` explains how to save a real article from
-NetNewsWire as a new one. `footnote-providers.toml` declares the note each footnote
-format must open, which `check` verifies. Contributor and agent orientation lives in
-[`AGENTS.md`](AGENTS.md).
+Test cases are TOML fixtures in `fixtures/` whose keys mirror the `[[variables]]` in `template.html`; the tool's built-in `article` and `kitchen-sink` fixtures render alongside them. `npx nnw-theme@2 capture` explains how to save a real article from NetNewsWire as a new one. `footnote-providers.toml` declares the note each footnote format must open, which `check` verifies.
 
-`npx nnw-theme@2` picks up new 2.x tooling releases on its own; there is nothing to
-update in this repository.
+Contributor and agent guidance, including how to merge in upstream changes from Ember, lives in [`AGENTS.md`](AGENTS.md).
 
 ## Releasing
 
 1. Run `npx nnw-theme@2 bump` and commit the new `Info.plist` version.
-2. In GitHub, run **Actions → Publish theme** with the new tag (for example, `v2.3`).
+2. In GitHub, run **Actions → Publish theme** with the new tag (for example, `v1.1`).
 
-The workflow checks the theme, refuses a reused tag or a version that did not
-increase, attaches `Ember.nnwtheme.zip`, and writes the release notes from the commits
-since the last tag with [git-cliff](https://git-cliff.org). The install links always
-point at `releases/latest`, so they pick up the newest release automatically.
+The workflow checks the theme, refuses a reused tag or a version that did not increase, attaches `Cinder.nnwtheme.zip`, and writes the release notes from the commits since the last tag with [git-cliff](https://git-cliff.org). The download link points at `releases/latest`, so it always picks up the newest release.
 
-## License
+## Licence
 
-[Apache License 2.0](LICENSE) © 2026 Dave Marquard.
-<!-- nnw-theme-identity:end -->
+[Apache License 2.0](LICENSE). Ember © 2026 Dave Marquard; Cinder's changes © 2026 Ryan Conway.
