@@ -1,19 +1,20 @@
 /* =====================================================================
-   Ember — a warm, editorial theme for NetNewsWire
-   by Dave Marquard
+   Cinder: a light, editorial theme for NetNewsWire
+   by Ryan Conway, based on Ember by Dave Marquard
 
    A theme's stylesheet.css fully REPLACES NetNewsWire's default
    stylesheet; only core.css is prepended automatically. So this file is
-   self-contained: it starts from NNW's default scaffolding and layers on
-   Ember's design — Apple system fonts (SF Pro / SF), a NetNewsWire blue
-   accent, oversized headline type, a drop cap, flagged section heads,
-   and prominent pull-quotes. Light only: dark mode is deliberately off.
+   self-contained, starting from NNW's default scaffolding and layering on
+   Cinder's design: Apple system fonts (SF Pro / SF) with New York serif
+   headings and quotations, a NetNewsWire blue accent, oversized headline
+   type, and prominent pull-quotes. Light only: dark mode is deliberately
+   off. The --ember-* names are kept from Ember so its fixes still merge.
    ===================================================================== */
 
 /* ---------- Palette ---------------------------------------------------
    Warm off-white ground, warm-biased ink, and NetNewsWire's own blue
    accent. The --*-color names below are the ones NNW's base rules
-   reference; --ember-* are Ember's own tokens.
+   reference; --ember-* are the theme's own tokens.
 */
 
 :root {

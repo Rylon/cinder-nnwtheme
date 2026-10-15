@@ -1,5 +1,5 @@
 # WordPress quote block whose citation is a bare link (ryBlog's "OrbStack",
-# from the feed's content:encoded). Ember sets a citation in uppercase for a
+# from the feed's content:encoded). Cinder sets a citation in uppercase for a
 # name; a URL in uppercase shouts.
 # Preview with: npx nnw-theme@2 render wordpress-quote-cite
 
