@@ -1,0 +1,50 @@
+# MacStories's "Apple Kicks Off Indie Games Week…" as Miniflux delivers it.
+# MacStories wraps each image as div.media-wrapper > img + p.image-caption;
+# Miniflux's sanitizer drops the wrapper, every class, and every id, so each
+# caption arrives as a bare paragraph after its image. The article opens on a
+# captioned image whose caption is only a credit ("Source: Apple."), which must
+# not take the drop cap. Built from the site's feed (macstories.net/feed/) by
+# applying those three removals; image sizes are the files' own. As in
+# macstories-miniflux-app-icons, Ember keys this shape on MacStories's image
+# host and nnw-theme drops a network src, so each image is a same-size data:
+# placeholder with the original URL kept as its fragment.
+# Preview with: npx nnw-theme@2 render macstories-miniflux-captions
+
+byline = 'John Voorhees'
+date_long = 'October 12, 2026'
+date_medium = 'Oct 12, 2026'
+date_short = '10/12/26'
+dateline_style = 'articleDateline'
+datetime_long = 'October 12, 2026 at 9:03:36 AM'
+datetime_medium = 'Oct 12, 2026 at 9:03 AM'
+datetime_short = '10/12/26, 9:03 AM'
+feed_link = 'https://www.macstories.net'
+feed_link_title = 'MacStories'
+preferred_link = 'https://www.macstories.net/news/apple-kicks-off-indie-games-week-with-six-new-iphone-and-ipad-games-plus-no-mans-sky-preorders/'
+text_size_class = 'largeText'
+time_long = '9:03:36 AM CDT'
+time_medium = '9:03:36 AM'
+time_short = '9:03 AM'
+title = 'Apple Kicks Off Indie Games Week with Six New iPhone and iPad Games, Plus No Man’s Sky Preorders'
+body = '''
+<img width="3840" height="2160" decoding="async" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzODQwIiBoZWlnaHQ9IjIxNjAiPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiM4YThmOTgiIGZpbGwtb3BhY2l0eT0iLjM1Ii8+PC9zdmc+#https://cdn.macstories.net/images/uploads/2026/10/12/app-store-indie-games-week-key-art-1791806010870-35f9f09045.png" alt="Source: Apple." loading="lazy"/><p>Source: Apple.</p>
+<p>Today, <a href="https://www.apple.com/newsroom/2026/10/app-store-indie-games-week-kicks-off-today/" referrerpolicy="no-referrer" rel="noopener noreferrer" target="_blank">Apple announced Indie Games Week</a>, a celebration of some of the best games from independent game studios. To kick things off, the company announced seven big titles that are making their iPhone and iPad debut today or are coming soon.</p>
+<p>Apple’s Carson Oliver, the head of App Store Worldwide, had this to say in <a href="https://www.apple.com/newsroom/2026/10/app-store-indie-games-week-kicks-off-today/" referrerpolicy="no-referrer" rel="noopener noreferrer" target="_blank">the company’s press release</a>:</p>
+<blockquote><p>
+  Indie games are constantly pushing the boundaries of creativity to deliver unique gameplay experiences to Apple users, and we wanted to take a moment to celebrate these games and the teams that take creative risks to push gaming forward.
+</p></blockquote>
+<img width="2640" height="1880" decoding="async" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNjQwIiBoZWlnaHQ9IjE4ODAiPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiM4YThmOTgiIGZpbGwtb3BhY2l0eT0iLjM1Ii8+PC9zdmc+#https://cdn.macstories.net/images/uploads/2026/10/12/sifu-gameplay-screenshot-2816x1940-01-framed-1791810073136-e4012fc72e.png" alt="Sifu." loading="lazy"/><p>Sifu.</p>
+<p>The games available today include:</p>
+<ul><li><a href="https://apps.apple.com/us/app/sifu/id6762813110" referrerpolicy="no-referrer" rel="noopener noreferrer" target="_blank">Sifu</a> ($7.99), a stylish martial arts fighting game where you play as a kung fu student out for revenge.</li>
+<li><a href="https://apps.apple.com/us/app/vampire-crawlers/id6749456796" referrerpolicy="no-referrer" rel="noopener noreferrer" target="_blank">Vampire Crawlers</a> ($9.99), a deck-building spin-off of Vampire Survivors where the dungeon battles are playable at your own pace.</li>
+<li><a href="https://apps.apple.com/us/app/little-kitty-big-city/id6760796215" referrerpolicy="no-referrer" rel="noopener noreferrer" target="_blank">Little Kitty, Big City</a> (Free with $9.99 full-game unlock), an open world game where you explore a cityscape as a cat.</li>
+<li><a href="https://apps.apple.com/us/app/dome-keeper/id6755046527" referrerpolicy="no-referrer" rel="noopener noreferrer" target="_blank">Dome Keeper</a> ($9.99), a mining and defense game where you must mine for resources while keeping an eye out for enemy attacks on the surface.</li>
+<li><a href="https://apps.apple.com/us/app/yes-your-grace-2-snowfall/id6757407113" referrerpolicy="no-referrer" rel="noopener noreferrer" target="_blank">Yes, Your Grace 2: Snowfall</a> (Free with $4.99 full-game unlock), a kingdom-management game that poses moral dilemmas as you are forced to make choices to save your empire.</li>
+<li><a href="https://apps.apple.com/us/app/9-kings/id6757860952" referrerpolicy="no-referrer" rel="noopener noreferrer" target="_blank">9 Kings</a> (Free with $8.99 full-game unlock), a card-based strategy game where you assemble your army for battle with rivals, managing troops and resources.</li>
+</ul><img width="2760" height="1350" decoding="async" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNzYwIiBoZWlnaHQ9IjEzNTAiPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiM4YThmOTgiIGZpbGwtb3BhY2l0eT0iLjM1Ii8+PC9zdmc+#https://cdn.macstories.net/images/uploads/2026/10/12/no-mans-sky-gameplay-screen-2622x1206-01-framed-1791810065248-a39759890b.png" alt="Coming Oct. 28: No Man's Sky." loading="lazy"/><p>Coming Oct. 28: No Man’s Sky.</p>
+<p>Also announced today is that <a href="https://apps.apple.com/us/app/no-mans-sky/id1615755735" referrerpolicy="no-referrer" rel="noopener noreferrer" target="_blank">No Man’s Sky</a> is making its debut on the iPhone and iPad on October 28th with preorders available today. <a href="https://www.apple.com/newsroom/2022/06/macos-ventura-brings-powerful-productivity-tools-new-continuity-features-to-mac/" referrerpolicy="no-referrer" rel="noopener noreferrer" target="_blank">Originally announced as a 2022 release</a> for the Mac and iPad, the game has clearly taken longer than expected to adapt to Apple’s platforms.</p>
+<p>For those who have been patiently waiting, though, the news is very good. The iPhone and iPad versions support all of the past updates to No Man’s Sky and will work on every iPhone from the iPhone 11 forward and the iPad Air (3rd generation) and later. The game will also feature touch controls, and both mouse and keyboard and controller support. However, similar to the game’s Switch debut, it will not include multiplayer, Settlements, cross-save, or cross-play at launch. No Man’s Sky will be free to download and try with a full-game unlock offered as a $19.99 In-App Purchase.</p>
+<img width="3000" height="1470" decoding="async" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAwIiBoZWlnaHQ9IjE0NzAiPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiM4YThmOTgiIGZpbGwtb3BhY2l0eT0iLjM1Ii8+PC9zdmc+#https://cdn.macstories.net/images/uploads/2026/10/12/dome-keeper-gameplay-screenshot-2868x1320-01-framed-1791810057407-349e2fe04d.png" alt="Dome Keeper." loading="lazy"/><p>Dome Keeper.</p>
+<p>I’ve had a chance to play each of the games available today on my iPhone and iPad and it’s a great collection. What sets them apart from previous releases on other platforms is the attention each has paid to the unique features of Apple’s platforms. Many, including Dome Keeper, Sifu, and Vampire Crawlers, support Game Center and Family Sharing. By and large, the touch controls are well done, too, but I appreciate the games that offer controller support the most since that’s my preferred way to play.</p>
+<p>I’ve had a lot of fun trying the betas of each of these games and am looking forward to No Man’s Sky later this month. There’s something great here for anyone who loves iPhone and iPad gaming, but be sure to check out the other gems Apple is highlighting in this <a href="https://apps.apple.com/us/story/id6793311746" referrerpolicy="no-referrer" rel="noopener noreferrer" target="_blank">App Store editorial feature</a>, too.</p>
+'''

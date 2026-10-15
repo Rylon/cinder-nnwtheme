@@ -1,0 +1,45 @@
+# The showcase article behind the site's screenshots, the marketplace image, and
+# the social card. Field Notes and its writer are made up; the photographs are
+# NASA's (public domain), credited in each caption. It packs Ember's signature
+# details into a short read: drop cap, figure captions with a credit, a
+# pull-quote, flagged section heads, and Markdown footnotes with a Notes list.
+# Image src URLs are placeholders; the screenshot capture swaps in the real
+# photographs by alt text.
+# Preview with: npx nnw-theme@2 render showcase
+
+avatar_src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5NiIgaGVpZ2h0PSI5NiI+PHJlY3Qgd2lkdGg9Ijk2IiBoZWlnaHQ9Ijk2IiByeD0iMjAiIGZpbGw9IiMyRTNBNEYiLz48Y2lyY2xlIGN4PSI0OCIgY3k9IjU2IiByPSIyMCIgZmlsbD0iIzlGQzNFOCIvPjxyZWN0IHk9IjU2IiB3aWR0aD0iOTYiIGhlaWdodD0iNDAiIGZpbGw9IiMyRTNBNEYiLz48cmVjdCB4PSIxOCIgeT0iNjAiIHdpZHRoPSI2MCIgaGVpZ2h0PSI0IiByeD0iMiIgZmlsbD0iIzlGQzNFOCIvPjwvc3ZnPg=='
+byline = 'Ines Calloway'
+date_long = 'October 9, 2026'
+date_medium = 'Oct 9, 2026'
+date_short = '10/9/26'
+datetime_long = 'October 9, 2026 at 7:40:00 AM'
+datetime_medium = 'Oct 9, 2026 at 7:40 AM'
+datetime_short = '10/9/26, 7:40 AM'
+feed_link = 'https://example.org/'
+feed_link_title = 'Field Notes'
+preferred_link = 'https://example.org/2026/10/mars-blue-sunsets'
+time_long = '7:40:00 AM PDT'
+time_medium = '7:40:00 AM'
+time_short = '7:40 AM'
+title = 'On Mars, the Sunsets Are Blue'
+body = '''
+<p>Curiosity has spent more than a decade climbing Mount Sharp, and in that time it has watched thousands of Martian days come to an end.<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> Most of them close the way a desert evening should: the light turns long and amber, shadows stretch across the bedrock, and the butterscotch sky slowly dims.</p>
+<figure><img src="https://example.org/images/boxwork-postcard.jpg" width="1920" height="1080" alt="Curiosity’s deck in the foreground, looking out over pale ridges under a sky shading from amber to blue."><figcaption>Curiosity looks back across Mount Sharp’s boxwork region, ridges left behind by ancient groundwater. Credit: NASA/JPL-Caltech/MSSS</figcaption></figure>
+<p>The last few minutes are different. As the sun nears the crater rim, a cold blue glow gathers around it, brightest close to the disk and fading into the dusk. It is the inverse of an evening on Earth, and it is not a trick of the camera.</p>
+<blockquote><p>On Mars, the day ends in blue. The dust that paints the sky butterscotch at noon is what lets the blue through at dusk.</p></blockquote>
+<h2>Fine dust, long light</h2>
+<p>The Martian atmosphere is thin, but it is never clear. It carries fine dust whose particles are just the right size to let blue light pass through more efficiently than the longer, redder wavelengths. When the sun is low, its light crosses the most dust, and that blue light stays close to the sun’s direction instead of scattering across the whole sky.</p>
+<figure><img src="https://example.org/images/gale-sunset.jpg" width="1344" height="1080" alt="A small, pale sun setting behind the dark rim of Gale Crater, ringed by a blue glow in a gray sky."><figcaption>The first sunset Curiosity recorded in color, at the close of its 956th Martian day in Gale Crater. Credit: NASA/JPL-Caltech/MSSS/Texas A&amp;M Univ.</figcaption></figure>
+<p>The colors are close to what you would see standing there yourself. The rover’s Mast Camera sees color much as human eyes do, if a little less sensitive to blue,<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup> so an astronaut’s first sunset on Mars should look very much like this one.</p>
+<h3>A sky worth waiting for</h3>
+<p>Dust storms come and go, and the effect is strongest on clear evenings. Mission scientists still schedule sunset sequences when they can, partly for the atmospheric science and partly, one suspects, because nobody gets tired of seeing them.</p>
+<hr>
+<ol>
+<li id="fn:1"><p>Curiosity landed in Gale Crater in August 2012 and reached the base of Mount Sharp two years later. <a href="#fnref:1" class="footnote-backref" role="doc-backlink">↩︎</a></p></li>
+<li id="fn:2"><p>The published images are calibrated and white-balanced to remove camera artifacts. <a href="#fnref:2" class="footnote-backref" role="doc-backlink">↩︎</a></p></li>
+</ol>
+'''
+
+[expect.footnotes]
+# Every marker stays on the line of the word it annotates.
+keep_with_word = true

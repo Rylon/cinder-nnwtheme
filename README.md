@@ -2,15 +2,14 @@
 # Ember — a NetNewsWire theme
 
 A warm, editorial theme for [NetNewsWire](https://netnewswire.com) using Apple system
-fonts with a vermilion accent, big headline type, a drop cap, flagged section headings,
+fonts with a vermilion accent, big headline type, a drop cap, serif-italic captions,
 and full-bleed images. Designed for **macOS, iOS, and iPadOS**, with first-class light
 and dark modes.
 
 **→ [ember.marquard.org](https://ember.marquard.org)**
 
 <p align="center">
-  <img src="docs/assets/ember-macos-light.png" width="46%" alt="Ember on macOS, light mode">
-  <img src="docs/assets/ember-macos-dark.png" width="46%" alt="Ember on macOS, dark mode">
+  <img src="screenshots/theme-preview.png" width="720" alt="An article in Ember, split diagonally between light and dark mode: a bold headline, vermilion dateline, drop cap, and a photo of a Martian landscape">
 </p>
 
 ## Install
@@ -37,6 +36,7 @@ Then choose **Ember** as your article theme in NetNewsWire's settings.
 - **Flagged section headings** — a short accent bar marks each `<h2>`/`<h3>`.
 - **Prominent pull-quotes** with a tinted panel and accent rule.
 - **Full-bleed images** that span the column edge-to-edge, captions kept inset.
+- **Captions set apart** in serif italic, with photo credits in muted small caps.
 - **Broader footnote support** with native-style popovers for common Markdown,
   Substack, and WordPress footnote formats.
 - **Designed light and dark** — both grounds are warm, not a naive inversion.

@@ -1,0 +1,107 @@
+# MacStories app roundup (Our Favorite Indie Apps for iOS 27, Vol. 3, from the
+# feed's content:encoded). Each app opens with its 512px icon in a
+# div.media-wrapper right before the app's <h3>; macstories.net floats it at
+# 160px beside the heading, but only after its own script tags the wrapper
+# .media-wrapper-icon, and the feed carries neither that class nor the CSS.
+# Without a rule the icons stood column-wide. The feed's script is kept as
+# shipped; each <img> gained its file's width and height (the feed has none) so
+# the offline placeholders keep their true size.
+# Preview with: npx nnw-theme@2 render macstories-app-icons
+
+byline = 'John Voorhees'
+date_long = 'October 9, 2026'
+date_medium = 'Oct 9, 2026'
+date_short = '10/9/26'
+dateline_style = 'articleDateline'
+datetime_long = 'October 9, 2026 at 9:06:22 AM'
+datetime_medium = 'Oct 9, 2026 at 9:06 AM'
+datetime_short = '10/9/26, 9:06 AM'
+feed_link = 'https://www.macstories.net'
+feed_link_title = 'MacStories'
+preferred_link = 'https://www.macstories.net/reviews/our-favorite-indie-apps-for-ios-27-vol-3/'
+text_size_class = 'mediumText'
+time_long = '9:06:22 AM CDT'
+time_medium = '9:06:22 AM'
+time_short = '9:06 AM'
+title = 'Our Favorite Indie Apps for iOS 27, Vol. 3'
+body = '''
+<div class="media-wrapper"><img decoding="async" src="https://cdn.macstories.net/images/uploads/2026/10/09/indie-apps-ios27-vol3-hero-1791555004409-1e2dfe8205.png" width="2400" height="1200" alt=""><p class="image-caption"></p></div>
+<p id="p2">We have another collection our favorite indie apps that take advantage of Apple’s latest OS features. Today, we’re highlighting: Haven, Structured, Capture, Scrappy, and Fin.</p>
+<div class="section-app-debuts" id="div3">
+<div class="media-wrapper"><img decoding="async" src="https://cdn.macstories.net/images/uploads/2026/10/08/haven-setup-codes-1791480548149-efe6bdad55.png" width="512" height="512" alt=""><p class="image-caption"></p></div>
+<h3 id="haven"><a href="https://apps.apple.com/us/app/haven-setup-codes/id6760440926" rel="noopener noreferrer">Haven</a></h3>
+<p>Haven is a HomeKit and Matter pairing code utility by João Franco for the iPhone, iPad, Mac, and Apple Watch that added Siri AI features this fall. The app is exactly what you want with this sort of utility because it makes storing codes for safekeeping fast and easy. Later when you need to re-pair a smart plug behind a couch or a lightbulb in a hard-to-reach spot, you’ll be glad you dropped the codes into Haven.</p>
+<p>Retrieving codes is made even simpler, thanks to Haven’s Siri AI integration. Just ask for a code based on the name of your device in Haven, and Siri will fetch the code for you without opening the app. The feature works with both HomeKit and Matter codes and is compatible with natural language queries. The app also supports tagging and the ability to use Apple Intelligence to suggest a tag from among your existing tags.</p>
+<div class="media-wrapper"><img decoding="async" src="https://cdn.macstories.net/images/uploads/2026/10/08/chatgpt-image-oct-8-2026-05-20-08-pm-1791494429885-a25bb39c06.png" width="1536" height="1017" alt=""><p class="image-caption"></p></div>
+<p>In addition to the new Apple Intelligence and Siri AI features, Haven can track the home where your device is installed, its room, category, brand, model, serial number, protocol, power source, and status. You can mark items as favorites and add notes and attachments, like a photo of the device, too.</p>
+<p>That’s a lot, which will appeal to the HomeKit nerds out there, but as a free download that offers unlimited pairing codes for just $6.99, it’s worth setting up Haven even if all you do is name your device, add the room where it’s located, and then search for it when needed via Siri. Siri AI is perfect for databases, and as anyone who is deep into the HomeKit world knows, a database is the best way to keep your smart home humming.</p>
+<div class="media-wrapper"><img decoding="async" src="https://cdn.macstories.net/images/uploads/2026/10/08/structured-1791483778240-07ca079013.png" width="512" height="512" alt=""><p class="image-caption"></p></div>
+<h3 id="structured"><a href="https://apps.apple.com/us/app/structured-daily-planner-todo/id1499198946" rel="noopener noreferrer">Structured</a></h3>
+<p>I had the pleasure of meeting the Structured team at WWDC this year. It was fun to walk through the app with them, learning about all their plans for the summer development season. But it’s been even more fun to actually play with the final product on the iPhone, iPad, Mac, and Apple Watch.</p>
+<p>Structured is a day planning app with a beautiful and unique design that made it a finalist for both the 2025 iPad App of the Year Award and an Apple Design Award. I have a bad habit of overstuffing my workday, which is precisely the problem that Structured is designed to solve by visualizing your day and work on a timeline. The app can integrate with Reminders, your calendars, handle recurring tasks, start focus timers, and more.</p>
+<div class="media-wrapper"><img decoding="async" src="https://cdn.macstories.net/images/uploads/2026/10/08/shortcut-upload-1791492769352-e09ebd3e78.png" width="4530" height="3000" alt=""><p class="image-caption"></p></div>
+<p>As for Siri AI, Apple’s assistant can now assist Structured users with creating and editing tasks. There’s also a color prediction feature that’s in beta that learns from your past color choices to help suggest the color of a new task. Plus, Structured got a Liquid Glass update, which makes the app feel right at home among other modern apps without sacrificing the app’s simple design and legibility. If you need help organizing your day and want to see everything in one place, you can’t go wrong with Structured.</p>
+<div class="media-wrapper"><img decoding="async" src="https://cdn.macstories.net/images/uploads/2026/10/08/scrappy-2026-10-08-1791486892572-833b1b1c8b.png" width="512" height="512" alt=""><p class="image-caption"></p></div>
+<h3 id="scrappy"><a href="https://apps.apple.com/us/app/scrappy-digitial-scrapbook/id6759259352" rel="noopener noreferrer">Scrappy</a></h3>
+<p>I’m always on the lookout for new ways to save random things I find on the Internet. I’m a digital hoarder by nature because you never can be sure when a link, image, or article that piques your curiosity will become something more in the future. The trouble is keeping these sort of bucket apps organized.</p>
+<p>With Scrappy, by developer Steve Harris, you can save it all: notes, images, PDFs, links, videos, photos, screenshots, and more. Harris is also the developer of <a href="https://apps.apple.com/us/app/keep-it-mobile/id1272769808" rel="noopener noreferrer">Keep It</a> a notebook and document organizer app that <a href="https://www.macstories.net/stories/my-must-have-ios-apps-2018-edition/" rel="noopener noreferrer">we’ve covered</a> <a href="https://www.macstories.net/club/macstories-weekly-issue-135/" rel="noopener noreferrer">on MacStories</a> <a href="https://www.macstories.net/news/shortcuts-for-mac-27-of-our-favorite-third-party-integrations/" rel="noopener noreferrer">before</a>. There are similarities between Keep It and Scrappy, but the thing that unique about Scrappy is that it’s much more visual.</p>
+<div class="media-wrapper"><img decoding="async" src="https://cdn.macstories.net/images/uploads/2026/10/08/shortcut-upload-1791497391268-42c1c514f3.png" width="4530" height="3000" alt=""><p class="image-caption"></p></div>
+<p>The app, which works on iPhone, iPad, and Mac, puts a handy shelf just off the edge of your Mac’s screen where you can drag items, and across all platforms, it feautures fast search and smart lists. Plus, thanks to Siri AI, you can search and open what you’ve saved and create and edit notes. There are filtering and sorting options, along with an extraordinarily long set of Shortcuts actions that make the app uniquely suited for automation. Scrappy also has a wonderfully modern card interface that takes advantage of Liquid Glass, and it displays previews of links, images, and other content. There are lots of “bucket apps” on the App Store, but Scrappy is one of my favorites.</p>
+<div class="media-wrapper"><img decoding="async" src="https://cdn.macstories.net/images/uploads/2026/10/08/capture-2026-10-08-1791486893581-99dc1c1575.png" width="512" height="512" alt=""><p class="image-caption"></p></div>
+<h3 id="capture"><a href="https://apps.apple.com/us/app/quick-notes-capture/id6458535284" rel="noopener noreferrer">Capture</a></h3>
+<p>Apps like Capture are a unique obsession of mine as the online world relentlessly accelerates. Capture acts as an inbox for text, links, images, files, and tasks that works on the iPhone, iPad, Mac, Vision Pro, and Apple Watch. While you can store information in Capture long-term, it’s really meant to act as an inbox because the app has nearly 60 integrations with other third-party apps.</p>
+<div class="media-wrapper"><img decoding="async" src="https://cdn.macstories.net/images/uploads/2026/10/08/shortcut-upload-1791493136355-a0b82c2c40.png" width="4530" height="3000" alt=""><p class="image-caption"></p></div>
+<p>Capture has been building a deep library of integrations for a long time now, which I appreciate. It’s the sort of user-first approach that also made the app a perfect fit for App Intents. That integration makes it simple to find, create, and edit items with Siri. There is also an extensive set of Shortcuts actions, making the app a great fit for cross-app automations. Capture also offers creating, finding, and editing via Siri AI, note transcription using Apple’s on-device model, and a voice-based agentic mode.</p>
+<div class="media-wrapper"><img decoding="async" src="https://cdn.macstories.net/images/uploads/2026/10/08/fin-2026-10-08-1791486894553-b9187be76c.png" width="512" height="512" alt=""><p class="image-caption"></p></div>
+<h3 id="fin"><a href="https://apps.apple.com/us/app/fin-budget-planner-app/id1489698531" rel="noopener noreferrer">Fin</a></h3>
+<p>Finally, I want to shout out Fin, the personal budgeting app for iPhone, iPad, Vision Pro, and Apple Watch. Getting data into a budgeting app quickly and easily makes all the difference in the world when it comes to sticking to your budget. Fin excels at quickly recording and organizing your expenses in a clear, colorful interface that takes advantage of Apple’s modern design language.</p>
+<div class="media-wrapper"><img decoding="async" src="https://cdn.macstories.net/images/uploads/2026/10/08/shortcut-upload-1791492472876-8bc9e9e1d4.png" width="4530" height="3000" alt=""><p class="image-caption"></p></div>
+<p>With the latest version, Fin adds onscreen awareness that lets you ask Siri questions about what’s onscreen. The app also exposes transactions and accounts to Spotlight making it easy to pinpoint data in both. Plus, Fin lets you search, import, export, and add data to the app using Siri. There’s an extra large chart widget too. If you’re looking for a simple on-device way to privately manage your expenses, Fin’s a great choice.</p>
+<p></p></div>	<script id="script4">
+		document.addEventListener( 'DOMContentLoaded', function () {
+			function processIcons(scope) {
+				scope.querySelectorAll('.media-wrapper').forEach(function (wrapper) {
+					var next = wrapper.nextElementSibling;
+					if (!next || next.tagName !== 'H3') {
+						return;
+					}
+
+					wrapper.querySelectorAll('img').forEach(function (img) {
+						var caption = img.nextElementSibling;
+						if (caption && caption.matches('p.image-caption')) {
+							caption.parentNode.removeChild(caption);
+						}
+					});
+
+					wrapper.classList.add('media-wrapper-icon');
+				});
+			}
+
+			function insertHrBeforeHeadings(scope) {
+				var headings = scope.querySelectorAll('h3');
+
+				// Start at 1 — the first app needs no separator above it.
+				for (var i = 1; i < headings.length; i++) {
+					var target = headings[i];
+					var prev = target.previousElementSibling;
+
+					if (prev && prev.matches('.media-wrapper-icon')) {
+						target = prev;
+					}
+
+					target.parentNode.insertBefore(document.createElement('hr'), target);
+				}
+			}
+
+			if (document.querySelector('img.icon')) {
+				processIcons(document);
+			}
+
+			var appDebuts = document.querySelector('.section-app-debuts');
+			if (appDebuts) {
+				processIcons(appDebuts);
+				insertHrBeforeHeadings(appDebuts);
+			}
+		} );
+	</script>
+'''

@@ -1,0 +1,23 @@
+# ZEIT ONLINE newsfeed item (http://newsfeed.zeit.de/all, from content:encoded):
+# every item opens with a 148x84 thumbnail floated by an inline style, wrapped
+# in a link, beside loose text. Reported by email: the bleed rule pulled the
+# float into the left margin and translated it back over the text, so the
+# image covered the first words of each line. The feed omits the img size;
+# width and height give the offline placeholder the thumbnail's real 148x84.
+# Preview with: npx nnw-theme@2 render zeit-float-image
+
+byline = 'DIE ZEIT: Deutschland - Thordis Schreiber'
+date_long = 'October 12, 2026'
+date_medium = 'Oct 12, 2026'
+date_short = '10/12/26'
+dateline_style = 'articleDateline'
+datetime_long = 'October 12, 2026 at 4:12:14 PM'
+datetime_medium = 'Oct 12, 2026 at 4:12 PM'
+datetime_short = '10/12/26, 4:12 PM'
+feed_link = 'https://www.zeit.de/index'
+feed_link_title = 'Nachrichten: DIE ZEIT Newsfeed'
+preferred_link = 'https://www.zeit.de/politik/deutschland/2026-10/erbschaftsteuer-bundesverfassungsgericht-bayern-regionalisierung-gxe'
+text_size_class = 'mediumText'
+title = 'Erbschaftsteuer: Bundesverfassungsgericht prüft Klage Bayerns zu Erbschaftsteuer'
+body = '''
+<a href="https://www.zeit.de/politik/deutschland/2026-10/erbschaftsteuer-bundesverfassungsgericht-bayern-regionalisierung-gxe"><img style="float:left; margin-right:5px" width="148" height="84" src="https://img.zeit.de/politik/deutschland/2026-10/erbschaftsteuer-bundesverfassungsgericht-bayern-regionalisierung-foto-1/wide__148x84"></a> Das Bundesverfassungsgericht befasst sich erneut mit der Erbschaftsteuer. Es geht um die Forderung Bayerns nach einer Regionalisierung der Abgabe.'''
