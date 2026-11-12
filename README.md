@@ -2,7 +2,7 @@
 
 A calm, light-mode only reading theme for [NetNewsWire](https://netnewswire.com).
 
-Cinder is a restyle of the excellent [Ember](https://ember.marquard.org/) by Dave Marquard. Ember is warm and fiery; Cinder is what's left once the fire has cooled.
+Cinder is a restyle of the excellent [Ember](https://ember.marquard.org/) by Dave Marquard. Ember is warm fiery colours, whereas Cinder is cooler blues, in light-mode only.
 
 <p align="center">
   <img src="screenshots/theme-preview.png" width="720" alt="An article in Cinder: a bold serif headline, a blue dateline, and a quotation in serif type with an oversized blue opening quote mark">
