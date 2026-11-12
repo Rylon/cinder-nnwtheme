@@ -11,9 +11,9 @@
 	<key>ThemeIdentifier</key>
 	<string>dev.rylon.nnwtheme.cinder</string>
 	<key>Version</key>
-	<integer>1</integer>
+	<integer>2</integer>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>1.1</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>Ember © 2026 Dave Marquard; Cinder's changes © 2026 Ryan Conway</string>
 </dict>
