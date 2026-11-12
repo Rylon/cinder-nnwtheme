@@ -696,7 +696,7 @@ figcaption,
 .ember-enclosures .nnw-enclosure-audio > .nnw-enclosure-caption {
 	order: -1;
 	margin: 0;
-	font-family: inherit;
+	font-family: var(--ember-serif);
 	font-style: normal;
 	font-size: 1.05em;
 	font-weight: 700;
