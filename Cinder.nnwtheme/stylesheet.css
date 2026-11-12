@@ -15,13 +15,20 @@
    Warm off-white ground, warm-biased ink, and NetNewsWire's own blue
    accent. The --*-color names below are the ones NNW's base rules
    reference; --ember-* are the theme's own tokens.
+
+   Light only: color-scheme is light, so native controls (the audio
+   player, scrollbars) stay light whatever the system appearance.
 */
 
 :root {
+	color-scheme: light;
+
 	--ember-bg:        #FDFCFA;
 	--ember-ink:       #1B1714;
 	--ember-ink-soft:  #3B342E;
 	--ember-ink-mute:  #857B72;
+	/* Mute, darkened to 4.7:1 on --ember-bg for body-size text. */
+	--ember-ink-aside: #7A7068;
 	--ember-accent:    #086AEE;
 	--ember-accent-2:  #0556C4;
 	--ember-surface:   #F2ECE4;
@@ -31,6 +38,10 @@
 	--ember-footnote-ink: #FFFFFF;
 	--ember-footnote-chip:      rgba(8, 106, 238, 0.14);
 	--ember-footnote-chip-edge: rgba(8, 106, 238, 0.28);
+	--ember-popover-edge:       var(--ember-rule-2);
+	--ember-popover-shadow:
+		0 1px 2px rgba(27, 23, 20, 0.08),
+		0 8px 24px rgba(27, 23, 20, 0.14);
 	--ember-bleed:     0px; /* set to the body side padding per platform */
 	--ember-serif:     ui-serif, "New York", Georgia, serif;
 
@@ -43,7 +54,15 @@
 	--article-title-color:       var(--ember-ink);
 	--article-date-color:        var(--ember-accent);
 	--table-cell-border-color:   var(--ember-rule-2);
+	/* A footnote marker the adapter in template.html didn't turn into a chip
+	   (Article JavaScript off, markup it doesn't know) is a plain link. */
 	--sup-link-color:            var(--ember-accent);
+}
+
+/* Increase Contrast: the popover's hairline is the only thing separating it
+   from the page it floats over, so draw it in muted ink. */
+@media (prefers-contrast: more) {
+	:root { --ember-popover-edge: var(--ember-ink-mute); }
 }
 
 /* ---------- Base layout & canvas ------------------------------------ */
@@ -68,7 +87,7 @@
 body {
 	margin-left: auto;
 	margin-right: auto;
-	word-wrap: break-word;
+	overflow-wrap: break-word;
 	max-width: 44em;
 	--ember-column: min(100cqw - 2 * var(--ember-bleed), 44em);
 
@@ -88,27 +107,30 @@ a:hover {
 
 /* ---------- Masthead (feed title / byline / avatar) ----------------- */
 
-.headerTable {
-	width: 100%;
-	height: 68px;
-}
-
-body .headerTable {
+/* Feed title and byline on the left, the feed's icon on the right, both
+   centered vertically. The avatar is sized to a standard two-line feed title +
+   byline stack (see .avatar img), so in the common case it fills the masthead;
+   when a byline runs to three or more lines the avatar sits at the vertical
+   middle of the taller stack rather than clinging to the top. */
+.masthead {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	align-items: center;
+	box-sizing: border-box;
+	min-height: 68px;
+	/* The masthead was a table, which quirks mode sets in the medium size
+	   whatever the page's; keep that on macOS (iOS sizes .header itself). */
+	font-size: medium;
 	border-bottom: 1px solid var(--header-table-border-color);
 	color: var(--header-color);
 }
 
+/* The global div rule centers with auto margins, which a grid honors. */
+.masthead > .header { margin: 0; }
+
 body .header {
 	color: var(--header-color);
 	line-height: 1.45;
-}
-
-/* Center both cells vertically. The avatar is sized to a standard two-line
-   feed title + byline stack (see .avatar img), so in the common case it fills
-   the masthead; when a byline runs to three or more lines the avatar sits at
-   the vertical middle of the taller stack rather than clinging to the top. */
-.headerTable td.header {
-	vertical-align: middle;
 }
 
 body .header a:link, .header a:visited {
@@ -126,9 +148,9 @@ body .header a:link, .header a:visited {
 	color: var(--feedlink-color);
 }
 
-/* Fixed, non-shrinking column for the icon with a gap so a long byline can
-   never crowd or overlap it. Width tracks the avatar so the column is no wider
-   than the icon it holds. */
+/* Non-shrinking column for the icon with a gap so a long byline can never
+   crowd or overlap it. Width tracks the avatar so the column is no wider than
+   the icon it holds. */
 .avatar {
 	width: 2.3em;
 	padding-inline-start: 16px;
@@ -150,9 +172,6 @@ body .header a:link, .header a:visited {
 	border-radius: 9px;
 }
 
-.rightAlign { text-align: end; }
-.leftAlign  { text-align: start; }
-
 /* ---------- Title & dateline ---------------------------------------- */
 
 .articleTitle {
@@ -164,6 +183,7 @@ body .header a:link, .header a:visited {
 	font-weight: 800;
 	letter-spacing: -0.021em;
 	line-height: 1.08;
+	text-wrap: balance;
 }
 
 .articleTitle a:link, .articleTitle a:visited {
@@ -225,7 +245,13 @@ body .header a:link, .header a:visited {
 	line-height: 1.66;
 	letter-spacing: -0.003em;
 	color: var(--ember-ink);
+	/* Avoid a lone word on a paragraph's last line and smooth the rag. */
+	text-wrap: pretty;
 }
+
+/* Headings break into lines of even length rather than a full line and a
+   stub. */
+.articleBody :is(h1, h2, h3, h4, h5, h6) { text-wrap: balance; }
 
 .articleBody p {
 	margin-top: 0;
@@ -241,6 +267,9 @@ h1, h2, h3, h4, h5, h6 {
 	font-family: var(--ember-serif);
 }
 
+/* An opening aside in parentheses is a note about the article, not its
+   first line: set it in gray, as Unsung's site does. */
+.articleBody > p.ember-aside { color: var(--ember-ink-aside); }
 h1 {
 	line-height: 1.15em;
 	font-weight: bold;
@@ -334,7 +363,7 @@ blockquote cite:has(> a:only-child) {
 code, pre {
 	font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Courier, monospace;
 	font-size: 1em;
-	-webkit-hyphens: none;
+	hyphens: none;
 	background: var(--code-background-color);
 }
 
@@ -381,7 +410,7 @@ pre code {
 .nnw-overflow table table { margin-bottom: 0; border: none; }
 
 .nnw-overflow td, .nnw-overflow th {
-	-webkit-hyphens: none;
+	hyphens: none;
 	word-break: normal;
 	border: 1px solid var(--table-cell-border-color);
 	border-top: none;
@@ -396,8 +425,8 @@ pre code {
 	letter-spacing: 0.03em;
 }
 
-.nnw-overflow tr :matches(td, th):last-child { border-right: none; }
-.nnw-overflow :matches(thead, tbody, tfoot):last-child > tr:last-child :matches(td, th) { border-bottom: none; }
+.nnw-overflow tr :is(td, th):last-child { border-right: none; }
+.nnw-overflow :is(thead, tbody, tfoot):last-child > tr:last-child :is(td, th) { border-bottom: none; }
 .nnw-overflow td pre { border: none; padding: 0; margin: 0; }
 .nnw-overflow table[border="0"] { border-width: 0; }
 
@@ -452,22 +481,22 @@ figure {
    percentage is the image's own width, so it is the one property that can
    weigh that against the column's.
 
-   A figure the feed floated for itself is excluded: it is a thumbnail set
-   beside the copy, not a lede, and a float is sized to fit its contents, so
-   a percentage width inside it is circular — WebKit resolves it to zero and
-   the image vanishes. See .articleBody figure[style*="float"] below. So is an
-   image the feed floated itself (ZEIT ONLINE's thumbnails): the bleed margin
-   would move its float area into the margin while the translate drew it back
-   over the text. See .articleBody img[style*="float"] below. WordPress's
-   alignleft and alignright classes float the same way; see .alignleft
-   below. :where keeps the
-   exclusion from raising these selectors' specificity. A Ghost bookmark card
-   is a figure wrapping a link too; see below. */
-.articleBody > img:not(:where([style*="float"], [align="left" i], [align="right" i], .alignleft, .alignright)),
-.articleBody > a:only-child > img:not(:where([style*="float"], [align="left" i], [align="right" i], .alignleft, .alignright)),
-.articleBody > p > img:only-child:not(:where([style*="float"], [align="left" i], [align="right" i], .alignleft, .alignright)),
-.articleBody figure:not([style*="float"], .alignleft, .alignright, .kg-bookmark-card) > img:not(:where([style*="float"], [align="left" i], [align="right" i], .alignleft, .alignright)),
-.articleBody figure:not([style*="float"], .alignleft, .alignright, .kg-bookmark-card) > a img:not(:where([style*="float"], [align="left" i], [align="right" i], .alignleft, .alignright)) {
+   A float is excluded, here and only here: an image floated by inline style,
+   the old align attribute or WordPress's alignleft and alignright classes,
+   and any image inside a floated figure. A float is a thumbnail set beside
+   the copy, not a lede. A floated image would have its float area moved into
+   the margin while the translate drew it back over the text (ZEIT ONLINE's
+   thumbnails); a float is sized to fit its contents, so a percentage width
+   inside one is circular — WebKit resolves it to zero and the image vanishes
+   (TidBITS's icons). See the floated figure and image rules below. :where
+   keeps the exclusion from raising the specificity. */
+:is(
+	.articleBody > img,
+	.articleBody > a:only-child > img,
+	.articleBody > p > img:only-child,
+	.articleBody figure > img,
+	.articleBody figure > a img
+):not(:where([style*="float"], [align="left" i], [align="right" i], .alignleft, .alignright, :is([style*="float"], .alignleft, .alignright) *)) {
 	display: block;
 	margin-left: calc(-1 * var(--ember-bleed));
 	margin-right: auto;
@@ -482,14 +511,10 @@ figure {
 	border-radius: 0;
 }
 
-.articleBody figure:not([style*="float"], .alignleft, .alignright, .kg-bookmark-card) > a {
+.articleBody figure:not([style*="float"], .alignleft, .alignright) > a {
 	display: block;
 	padding: 0;
 }
-
-/* Substack's restack and expand buttons under each image only work on
-   Substack. */
-.articleBody .image-link-expand { display: none; }
 
 /* A figure the feed floated itself (TidBITS's Watchlist icons): let it keep
    its own size and sit beside the copy. Cap it at a third of the column so a
@@ -515,6 +540,438 @@ figure {
 	max-width: 33%;
 	margin-bottom: 0.4em;
 }
+
+.articleBody figure > a,
+.articleBody figure > img {
+	margin-bottom: 0.7em;
+}
+
+/* Every caption shape gets one look:
+   - figcaption (WordPress blocks, Ghost, Medium, Substack, Six Colors, Ars);
+   - p.wp-caption-text, WordPress's classic-editor caption;
+   - p.image-caption, MacStories's caption paragraph when it has text;
+   - p.ember-caption, the template's wrap of loose caption text after an
+     image, and its mark on a caption a feed reader stripped of its class
+     (MacStories through Miniflux), so with Article JavaScript off that one
+     reads as copy;
+   - div.nnw-enclosure-caption and div.nnw-primary-image-caption, NetNewsWire's
+     captions under an enclosure image or video and the article's main image
+     (an audio caption heads its card instead; see Enclosures).
+   Set in the serif italic against the sans body, so a caption never reads as
+   copy; the template sets a trailing credit apart in muted small caps.
+   Only the caption shrinks: a figure also holds tables, embeds and cards,
+   which keep the body size. A caption paragraph sits outside any figure, so
+   it also sets its gap: snug under its image, a figure's margin after. */
+figcaption,
+.articleBody :is(.wp-caption-text, p.image-caption, .ember-caption),
+.ember-enclosures :is(.nnw-enclosure-caption, .nnw-primary-image-caption) {
+	margin-top: 0.7em;
+	font-family: ui-serif, "New York", Georgia, serif;
+	font-style: italic;
+	font-size: 0.86em;
+	line-height: 1.45;
+	color: var(--ember-ink-soft);
+}
+
+.articleBody :is(.wp-caption-text, p.image-caption, .ember-caption) {
+	margin-bottom: calc(1.6em / 0.86);
+}
+
+.ember-credit {
+	display: block;
+	margin-top: 0.15em;
+	font-style: normal;
+	font-variant-caps: all-small-caps;
+	letter-spacing: 0.04em;
+	color: var(--ember-ink-mute);
+}
+
+.articleBody > img:has(+ .ember-caption) { margin-bottom: 0; }
+
+/* ---------- Enclosures --------------------------------------------- */
+
+/* NetNewsWire 7.3 picks an article's main media (a video, else audio with the
+   article's image, else that image) as one div.nnw-primary-media, which the
+   template places in .ember-primary-media above the body. The rest of its
+   enclosures (a podcast's audio, a video file, a YouTube channel's player,
+   Media RSS images) come as div.nnw-enclosure blocks in one div.nnw-enclosures,
+   in the .ember-enclosures after the body. Both wrappers carry the macOS
+   text-size class, so they scale with the body.
+
+   An article with no media leaves a wrapper empty, and a NetNewsWire too old
+   for a macro leaves it in the wrapper as text: either way the wrapper holds
+   no media, so it doesn't show. */
+.ember-enclosures:not(:has(.nnw-enclosures, .nnw-primary-media)) { display: none; }
+
+.ember-enclosures {
+	margin-top: 2.4em;
+	line-height: 1.66;
+	color: var(--ember-ink);
+}
+
+.ember-enclosures :is(.nnw-enclosures, .nnw-primary-media, .nnw-primary-image) { margin: 0; }
+
+.ember-enclosures .nnw-primary-image:has(+ .nnw-enclosure) { margin-bottom: 1.6em; }
+
+.ember-enclosures .nnw-enclosure { margin: 0 0 1.6em; }
+
+.ember-enclosures .nnw-enclosure:last-child { margin-bottom: 0; }
+
+/* Leading media opens the article below the dateline, so it takes the
+   rule the body would draw there, and the body follows without one. */
+.ember-primary-media {
+	margin-top: 24px;
+	padding-top: 24px;
+	border-top: 1px solid var(--ember-rule);
+}
+
+.ember-primary-media:has(.nnw-primary-media) + .articleBody {
+	margin-top: 1.6em;
+	padding-top: 0;
+	border-top: none;
+}
+
+/* An enclosure image bleeds as a body image does (see Bleeding media): its
+   own size, never upscaled, spreading into the margins up to edge to edge. */
+.ember-enclosures :is(.nnw-enclosure-image, .nnw-primary-image) > img {
+	display: block;
+	margin-left: calc(-1 * var(--ember-bleed));
+	margin-right: auto;
+	max-width: calc(100% + 2 * var(--ember-bleed));
+	translate: clamp(0px, (var(--ember-column) + 2 * var(--ember-bleed) - 100%) / 2, var(--ember-bleed));
+	border-radius: 0;
+}
+
+/* Leading art is often square (podcast artwork runs 3000px), which edge to
+   edge would fill the window before a word of the article. Cap its height;
+   with both dimensions auto, the cap keeps its shape. width: auto overrides
+   the feed's width attribute, which would otherwise hold the width. */
+.ember-primary-media .nnw-primary-image > img {
+	width: auto;
+	max-height: min(70vh, 36em);
+}
+
+/* Players span the column and both margins, like the widest image. The
+   YouTube frame is 16:9 until NetNewsWire's script sizes it from its own
+   width and height. */
+.ember-enclosures .nnw-enclosure-video > :is(video, iframe) {
+	display: block;
+	width: calc(100% + 2 * var(--ember-bleed));
+	max-width: none;
+	margin-left: calc(-1 * var(--ember-bleed));
+	border: 0;
+	border-radius: 0;
+	background: #000;
+}
+
+.ember-enclosures .nnw-enclosure-video > iframe {
+	aspect-ratio: 16 / 9;
+	height: auto;
+}
+
+.ember-enclosures :is(.nnw-enclosure-image, .nnw-enclosure-video) > .nnw-enclosure-caption {
+	margin-bottom: 0;
+}
+
+/* Audio is a card: the episode's title in the headline face, its duration
+   and size in the dateline's small caps, and the system player beneath. The
+   script splits NetNewsWire's one-line caption into those two; without it,
+   the whole caption heads the card. */
+.ember-enclosures .nnw-enclosure-audio {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75em;
+	padding: 1em 1.1em 1.1em;
+	background: var(--ember-surface);
+	border: 1px solid var(--ember-rule);
+	border-radius: 12px;
+}
+
+.ember-enclosures .nnw-enclosure-audio > audio {
+	display: block;
+	width: 100%;
+	accent-color: var(--ember-accent);
+}
+
+.ember-enclosures .nnw-enclosure-audio > .nnw-enclosure-caption {
+	order: -1;
+	margin: 0;
+	font-family: inherit;
+	font-style: normal;
+	font-size: 1.05em;
+	font-weight: 700;
+	line-height: 1.3;
+	letter-spacing: -0.012em;
+	color: var(--ember-ink);
+}
+
+.ember-enclosure-title { display: block; }
+
+.ember-enclosure-meta {
+	display: block;
+	margin-top: 0.3em;
+	font-size: 0.82em;
+	font-variant-caps: all-small-caps;
+	font-variant-numeric: tabular-nums;
+	letter-spacing: 0.06em;
+	color: var(--ember-accent);
+}
+
+/* ---------- Rules, sup/sub ------------------------------------------ */
+
+hr {
+	border: none;
+	height: 2px;
+	width: 30%;
+	margin: 2.4em auto;
+	background: var(--ember-accent);
+	opacity: 0.7;
+	border-radius: 2px;
+}
+
+sup { vertical-align: top; position: relative; bottom: 0.2rem; }
+sub { vertical-align: bottom; position: relative; top: 0.2rem; }
+
+.iframeWrap { position: relative; display: block; padding-top: 56.25%; }
+.iframeWrap iframe { position: absolute; top: 0; left: 0; height: 100% !important; width: 100% !important; }
+
+.systemMessage {
+	position: absolute;
+	top: 45%;
+	left: 50%;
+	transform: translateX(-55%) translateY(-50%);
+	-webkit-user-select: none;
+	cursor: default;
+}
+
+body > .systemMessage { color: var(--system-message-color); }
+
+/* ---------- Newsfoot footnotes -------------------------------------- */
+
+/* The popover is a card in the page's own ground: newsfoot's 1px of padding
+   shows the popover's background as a hairline ring, and a soft two-layer
+   shadow lifts it. The radii are Ember's, not core.css's, so the card keeps
+   its shape across NetNewsWire releases (NetNewsWire PR #5547 moves core's
+   from 0.3em to 1em).
+
+   It fades in and settles down from just above its marker. NetNewsWire
+   releases with PR #5547 also add .is-closing and wait for the fade before
+   removing the popover; older ones remove it at once. The whole card moves,
+   arrow included, so the inner box's own transform from that PR is undone. */
+.newsfoot-footnote-popover {
+	background: var(--ember-popover-edge);
+	box-shadow: var(--ember-popover-shadow);
+	color: var(--ember-ink);
+	padding: 1px;
+	border: 0;
+	border-radius: 12px;
+	opacity: 1;
+	translate: 0 0;
+	transition: opacity 180ms ease-out, translate 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@starting-style {
+	.newsfoot-footnote-popover {
+		opacity: 0;
+		translate: 0 -0.3em;
+	}
+}
+
+.newsfoot-footnote-popover.is-closing {
+	opacity: 0;
+	translate: 0 -0.15em;
+	pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.newsfoot-footnote-popover,
+	.newsfoot-footnote-popover.is-closing { translate: none; }
+
+	@starting-style {
+		.newsfoot-footnote-popover { translate: none; }
+	}
+}
+
+.newsfoot-footnote-popover-arrow {
+	background: var(--ember-bg);
+	border: 1px solid var(--ember-popover-edge);
+}
+
+.newsfoot-footnote-popover-inner,
+.newsfoot-footnote-popover.is-closing .newsfoot-footnote-popover-inner {
+	background: var(--ember-bg);
+	border-radius: 11px;
+	transform: none;
+	transition: none;
+}
+
+/* Inline reference marker: one presentation no matter how the provider wrote it.
+   Whether a reference is wrapped in <sup> is arbitrary across formats, and while
+   the wrapper owned the sizing and the seat, two markers in the same sentence
+   could differ by 20% in size and 4px in height. Neutralize the wrapper; the
+   anchor below owns both.
+
+   Match the marker at any depth, not just as a direct child: on first click
+   newsfoot moves the anchor into a .newsfoot-footnote-container it inserts in
+   the anchor's place (newsfoot.js), so a `> a.footnote` test stops matching and
+   the wrapper's shrink comes back — the marker visibly shrinks when tapped. */
+.articleBody sup:has(a.footnote) {
+	font-size: inherit;
+	vertical-align: baseline;
+	position: static;
+	bottom: auto;
+}
+
+.articleBody a.footnote,
+.articleBody a.footnote:link,
+.articleBody a.footnote:visited {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+	background-color: var(--ember-footnote-chip);
+	color: var(--ember-accent);
+	box-shadow: inset 0 0 0 1px var(--ember-footnote-chip-edge);
+	text-decoration: none;
+	border-bottom: none;
+	padding: 0.18em 0.5em;
+	margin: 0 0.12em;
+	min-width: 2.1em;       /* a lone digit stays oblong rather than a circle */
+	border-radius: 0.45em;
+	vertical-align: 0.14em; /* seated just off the baseline, not superscripted */
+	top: auto;
+	font-size: 0.74em;
+	font-weight: 650;
+	line-height: 1;
+	font-variant-numeric: tabular-nums;
+	transition: background-color 120ms ease-out, box-shadow 120ms ease-out, color 120ms ease-out;
+}
+
+/* The template's adapter holds each marker to the word before it, so a line
+   never starts with a marker. newsfoot opens the popover inside that span, and
+   the note must wrap normally there. */
+.articleBody .ember-footnote-joined { white-space: nowrap; }
+/* Newer WebKit's text-wrap: pretty can break inside that nowrap span and
+   strand the marker on the next line, so blocks holding one wrap greedily. */
+.articleBody :is(p, li, dd, td, th, figcaption):has(.ember-footnote-joined) { text-wrap-style: auto; }
+.articleBody .ember-footnote-joined .newsfoot-footnote-popover { white-space: normal; }
+
+/* Stock newsfoot listens for clicks whose target is the marker anchor itself. */
+.articleBody a.footnote > * { pointer-events: none; }
+
+/* Some providers (Pandoc, table-based plugins) put the numeral in a <sup> or
+   <span> *inside* the anchor. The platform `body a *` rules would paint that
+   descendant with the accent — invisible against the capsule — and the global
+   `sup` raise would lift it clear of the capsule. Let the capsule own both. */
+.articleBody a.footnote * {
+	color: inherit;
+	font-size: inherit;
+	vertical-align: baseline;
+	position: static;
+	top: auto;
+	bottom: auto;
+}
+
+/* Touched or open, the chip fills in — the loud state is the transient one. */
+.articleBody a.footnote:hover,
+.newsfoot-footnote-popover:not(.is-closing) + a.footnote {
+	background-color: var(--ember-accent);
+	border-bottom: none;
+	color: var(--ember-footnote-ink);
+	box-shadow: 0 2px 4px rgba(27, 23, 20, 0.24);
+}
+
+/* Footnote list at the foot of the article: a flagged "Notes" apparatus.
+   Shorten the trailing rule to an accent tick, label the block, and demote
+   the list so it reads as endmatter. */
+.articleBody hr:has(+ ol) {
+	width: 2.1em;
+	height: 4px;
+	background: var(--ember-accent);
+	opacity: 1;
+	border-radius: 2px;
+	margin: 3.6em 0 0;
+}
+
+.articleBody hr + ol {
+	margin-top: 0.7em;
+	font-size: 0.86em;
+	line-height: 1.55;
+	color: var(--ember-ink-mute);
+	padding-left: 1.7em;
+}
+
+.articleBody hr + ol::before {
+	content: "Notes";
+	display: block;
+	margin: 0 0 1em -1.7em;
+	font-size: 0.82rem;
+	font-weight: 700;
+	letter-spacing: 0.13em;
+	text-transform: uppercase;
+	color: var(--ember-accent);
+}
+
+.articleBody hr + ol > li {
+	margin-bottom: 0.7em;
+	padding-left: 0.3em;
+}
+
+.articleBody hr + ol > li::marker {
+	color: var(--ember-ink-mute);
+	font-variant-numeric: tabular-nums;
+}
+
+.articleBody hr + ol > li p { margin: 0 0 0.5em; }
+
+/* The ↩︎ backlink: quiet, no underline/border, accent on hover. */
+.articleBody a[data-ember-footnote-backlink]:link,
+.articleBody a[data-ember-footnote-backlink]:visited,
+.articleBody hr + ol a[href^="#fnr"]:link,
+.articleBody hr + ol a[href^="#fnr"]:visited {
+	color: var(--ember-ink-mute);
+	text-decoration: none;
+	border-bottom: none;
+	margin-left: 0.3em;
+}
+.articleBody a[data-ember-footnote-backlink]:hover,
+.articleBody hr + ol a[href^="#fnr"]:hover {
+	background: var(--ember-surface);
+	color: var(--ember-accent);
+	border-bottom: none;
+	border-radius: 0.2em;
+	box-shadow: 0 0 0 0.18em var(--ember-surface);
+	text-decoration: none;
+}
+
+/* Platform hover rules color link descendants independently. Keep glyphs such
+   as Six Colors' wrapped return arrow in step with the backlink itself. */
+.articleBody a[data-ember-footnote-backlink]:hover *,
+.articleBody hr + ol a[href^="#fnr"]:hover * {
+	color: var(--ember-accent);
+}
+
+/* =====================================================================
+   Feed quirks
+
+   Fixes for one publisher's or platform's markup, grouped by source, each
+   with fixtures named after it. A quirk overrides the generic rules above
+   instead of the generic rules excluding it, so retiring one means deleting
+   its rules here. They come after the body rules, so a tie in specificity
+   goes to the quirk.
+
+   Two generic lists still name feed classes, because an override cannot
+   stand in for them: the floats the bleeding-media rule leaves out
+   (WordPress's alignleft and alignright), and the caption classes that get
+   the caption look and never take the drop cap.
+   ===================================================================== */
+
+/* ---------- WordPress ----------------------------------------------- */
+
+/* Spacer blocks add fixed-height gaps on top of Ember's own spacing. The
+   "appeared first on" line many feeds end with, and an embed's plain link once its
+   card has loaded, are marked by template.html; the site itself shows neither. */
+.articleBody :is(.wp-block-spacer, .ember-feed-credit, .ember-embed-fallback) { display: none; }
 
 /* WordPress floats by class, which its theme CSS styles and the feed leaves
    behind: a classic-editor image inside a paragraph, a block image's figure,
@@ -553,99 +1010,6 @@ figure {
 	max-width: 100%;
 }
 
-/* MacStories app icons: each app in a roundup opens with its icon in a
-   .media-wrapper right before the app's heading. The site floats it beside
-   the heading once its own script tags it .media-wrapper-icon, but the feed
-   carries neither the class (unless Article JavaScript runs that script) nor
-   the CSS, so the 512px icon stood column-wide. Float it here, keyed on the
-   structure; the heading becomes its own formatting context so its accent bar
-   starts beside the icon instead of under it. */
-.articleBody .media-wrapper:has(> img:only-of-type):has(+ h3) {
-	float: left;
-	clear: left;
-	width: 5.5em;
-	margin: 0 1em 0.5em 0;
-}
-
-.articleBody .media-wrapper:has(> img:only-of-type):has(+ h3) > img {
-	display: block;
-	width: 100%;
-	border-radius: 22%;
-}
-
-.articleBody .media-wrapper:has(> img:only-of-type) + h3 {
-	display: flow-root;
-}
-
-/* The empty caption paragraph MacStories leaves after every image would
-   lengthen the float; elsewhere its margin is what parts an image from the
-   text below, so it stays. */
-.articleBody .media-wrapper:has(+ h3) > p.image-caption:empty { display: none; }
-
-/* The same roundup through Miniflux, whose sanitizer drops the wrapper and
-   the caption's class: each icon is a bare image, an empty paragraph, then
-   the heading. A screenshot leaves the same pair before a paragraph instead.
-   That bare shape is common enough elsewhere that the rule also asks for
-   MacStories's image host. It undoes the bleed placement, which outranks the
-   float otherwise. */
-.articleBody > img[src*="cdn.macstories.net/"]:has(+ p:empty + h3) {
-	float: left;
-	clear: left;
-	width: 5.5em;
-	margin: 0 1em 0.5em 0;
-	translate: none;
-	border-radius: 22%;
-}
-
-.articleBody > img[src*="cdn.macstories.net/"]:has(+ p:empty + h3) + p:empty { display: none; }
-
-.articleBody > img[src*="cdn.macstories.net/"] + p:empty + h3 {
-	display: flow-root;
-}
-
-.articleBody figure > a,
-.articleBody figure > img {
-	margin-bottom: 0.7em;
-}
-
-/* Every caption shape gets one look:
-   - figcaption (WordPress blocks, Ghost, Medium, Substack, Six Colors, Ars);
-   - p.wp-caption-text, WordPress's classic-editor caption;
-   - p.image-caption, MacStories's caption paragraph when it has text;
-   - p.ember-caption, the template's wrap of loose caption text after an image;
-   - the bare paragraph after a MacStories image through Miniflux, which
-     strips p.image-caption's class (the template also marks it .ember-caption,
-     for the credit; this keeps the look with Article JavaScript off).
-   Set in the serif italic against the sans body, so a caption never reads as
-   copy; the template sets a trailing credit apart in muted small caps.
-   Only the caption shrinks: a figure also holds tables, embeds and cards,
-   which keep the body size. A caption paragraph sits outside any figure, so
-   it also sets its gap: snug under its image, a figure's margin after. */
-figcaption,
-.articleBody :is(.wp-caption-text, p.image-caption, .ember-caption),
-.articleBody > img[src*="cdn.macstories.net/"] + p:not(:empty) {
-	margin-top: 0.7em;
-	font-family: ui-serif, "New York", Georgia, serif;
-	font-style: italic;
-	font-size: 0.86em;
-	line-height: 1.45;
-	color: var(--ember-ink-soft);
-}
-
-.articleBody :is(.wp-caption-text, p.image-caption, .ember-caption),
-.articleBody > img[src*="cdn.macstories.net/"] + p:not(:empty) {
-	margin-bottom: calc(1.6em / 0.86);
-}
-
-.ember-credit {
-	display: block;
-	margin-top: 0.15em;
-	font-style: normal;
-	font-variant-caps: all-small-caps;
-	letter-spacing: 0.04em;
-	color: var(--ember-ink-mute);
-}
-
 .articleBody .wp-caption-text { margin-bottom: 0; }
 
 .articleBody .wp-caption {
@@ -653,8 +1017,69 @@ figcaption,
 	margin-bottom: 1.6em;
 }
 
-.articleBody > img:has(+ .ember-caption),
-.articleBody > img[src*="cdn.macstories.net/"]:has(+ p:not(:empty)) { margin-bottom: 0; }
+/* WordPress gallery block: nested image figures that WordPress's block CSS
+   wraps into columns. Without it each stacked at full width. Lay them out like
+   a Ghost gallery: bled like a single image, three to a row (two when there
+   are only two, or the count a columns-N class asks for), the last row
+   filling its width, and each row cropped to its tallest image. The caption
+   stays inset with the body copy. The nested images opt out of the
+   single-image bleed, which this selector outranks. */
+.articleBody figure.wp-block-gallery.has-nested-images {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+	margin-left: calc(-1 * var(--ember-bleed));
+	margin-right: calc(-1 * var(--ember-bleed));
+	max-width: none;
+	--ember-gallery-columns: 3;
+}
+
+.articleBody figure.wp-block-gallery.has-nested-images:not(:has(> figure:nth-of-type(3))) { --ember-gallery-columns: 2; }
+.articleBody figure.wp-block-gallery.columns-1 { --ember-gallery-columns: 1; }
+.articleBody figure.wp-block-gallery.columns-2 { --ember-gallery-columns: 2; }
+.articleBody figure.wp-block-gallery.columns-3 { --ember-gallery-columns: 3; }
+.articleBody figure.wp-block-gallery.columns-4 { --ember-gallery-columns: 4; }
+.articleBody figure.wp-block-gallery.columns-5 { --ember-gallery-columns: 5; }
+.articleBody figure.wp-block-gallery.columns-6 { --ember-gallery-columns: 6; }
+
+.articleBody figure.wp-block-gallery.has-nested-images > figure {
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 calc((100% - (var(--ember-gallery-columns) - 1) * 6px) / var(--ember-gallery-columns));
+	min-width: 0;
+	margin: 0;
+}
+
+.articleBody figure.wp-block-gallery.has-nested-images > figure > :is(img, a) {
+	flex: 1 1 auto;
+	min-height: 0;
+	width: 100%;
+	max-width: 100%;
+	margin: 0;
+	translate: none;
+	padding: 0;
+	object-fit: cover;
+}
+
+/* A gallery linked to its media files nests each image in a link. */
+.articleBody figure.wp-block-gallery.has-nested-images > figure > a {
+	display: flex;
+}
+
+.articleBody figure.wp-block-gallery.has-nested-images > figure > a > img {
+	width: 100%;
+	max-width: 100%;
+	margin: 0;
+	translate: none;
+	object-fit: cover;
+}
+
+.articleBody figure.wp-block-gallery.has-nested-images > figcaption {
+	flex: 1 0 100%;
+	box-sizing: border-box;
+	padding-left: var(--ember-bleed);
+	padding-right: var(--ember-bleed);
+}
 
 /* ---------- Ghost cards --------------------------------------------- */
 
@@ -706,6 +1131,14 @@ figcaption,
 	-webkit-box-orient: vertical;
 	-webkit-line-clamp: 2;
 	overflow: hidden;
+}
+
+/* The bleeding-media rule matches the figure's link through to any image, so
+   keep a thumbnail, should a feed carry one, inside the card. */
+.articleBody figure.kg-bookmark-card img {
+	margin: 0;
+	max-width: 100%;
+	translate: none;
 }
 
 /* Video embeds: Ghost's oEmbed markup sizes every YouTube player at 200×113,
@@ -813,70 +1246,6 @@ figcaption,
 	border-radius: 0;
 }
 
-/* WordPress gallery block: nested image figures that WordPress's block CSS
-   wraps into columns. Without it each stacked at full width. Lay them out like
-   a Ghost gallery: bled like a single image, three to a row (two when there
-   are only two, or the count a columns-N class asks for), the last row
-   filling its width, and each row cropped to its tallest image. The caption
-   stays inset with the body copy. The nested images opt out of the
-   single-image bleed, which this selector outranks. */
-.articleBody figure.wp-block-gallery.has-nested-images {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 6px;
-	margin-left: calc(-1 * var(--ember-bleed));
-	margin-right: calc(-1 * var(--ember-bleed));
-	max-width: none;
-	--ember-gallery-columns: 3;
-}
-
-.articleBody figure.wp-block-gallery.has-nested-images:not(:has(> figure:nth-of-type(3))) { --ember-gallery-columns: 2; }
-.articleBody figure.wp-block-gallery.columns-1 { --ember-gallery-columns: 1; }
-.articleBody figure.wp-block-gallery.columns-2 { --ember-gallery-columns: 2; }
-.articleBody figure.wp-block-gallery.columns-3 { --ember-gallery-columns: 3; }
-.articleBody figure.wp-block-gallery.columns-4 { --ember-gallery-columns: 4; }
-.articleBody figure.wp-block-gallery.columns-5 { --ember-gallery-columns: 5; }
-.articleBody figure.wp-block-gallery.columns-6 { --ember-gallery-columns: 6; }
-
-.articleBody figure.wp-block-gallery.has-nested-images > figure {
-	display: flex;
-	flex-direction: column;
-	flex: 1 1 calc((100% - (var(--ember-gallery-columns) - 1) * 6px) / var(--ember-gallery-columns));
-	min-width: 0;
-	margin: 0;
-}
-
-.articleBody figure.wp-block-gallery.has-nested-images > figure > :is(img, a) {
-	flex: 1 1 auto;
-	min-height: 0;
-	width: 100%;
-	max-width: 100%;
-	margin: 0;
-	translate: none;
-	padding: 0;
-	object-fit: cover;
-}
-
-/* A gallery linked to its media files nests each image in a link. */
-.articleBody figure.wp-block-gallery.has-nested-images > figure > a {
-	display: flex;
-}
-
-.articleBody figure.wp-block-gallery.has-nested-images > figure > a > img {
-	width: 100%;
-	max-width: 100%;
-	margin: 0;
-	translate: none;
-	object-fit: cover;
-}
-
-.articleBody figure.wp-block-gallery.has-nested-images > figcaption {
-	flex: 1 0 100%;
-	box-sizing: border-box;
-	padding-left: var(--ember-bleed);
-	padding-right: var(--ember-bleed);
-}
-
 /* Video card: keep a portrait clip (404 Media's are 1080×1920) from running
    several screens tall at full column width. The width stays 100% so the
    width/height attributes size the box before metadata loads; the video
@@ -934,197 +1303,70 @@ figcaption,
 	grid-row: 2;
 }
 
-/* ---------- Rules, sup/sub ------------------------------------------ */
+/* ---------- Substack ------------------------------------------------ */
 
-hr {
-	border: none;
-	height: 2px;
-	width: 30%;
-	margin: 2.4em auto;
-	background: var(--ember-accent);
-	opacity: 0.7;
-	border-radius: 2px;
+/* Substack's restack and expand buttons under each image only work on
+   Substack. */
+.articleBody .image-link-expand { display: none; }
+
+/* ---------- MacStories ---------------------------------------------- */
+
+/* MacStories app icons: each app in a roundup opens with its icon in a
+   .media-wrapper right before the app's heading. The site floats it beside
+   the heading once its own script tags it .media-wrapper-icon, but the feed
+   carries neither the class (unless Article JavaScript runs that script) nor
+   the CSS, so the 512px icon stood column-wide. Float it here, keyed on the
+   structure; the heading becomes its own formatting context so its accent bar
+   starts beside the icon instead of under it. */
+.articleBody .media-wrapper:has(> img:only-of-type):has(+ h3) {
+	float: left;
+	clear: left;
+	width: 5.5em;
+	margin: 0 1em 0.5em 0;
 }
 
-sup { vertical-align: top; position: relative; bottom: 0.2rem; }
-sub { vertical-align: bottom; position: relative; top: 0.2rem; }
-
-.iframeWrap { position: relative; display: block; padding-top: 56.25%; }
-.iframeWrap iframe { position: absolute; top: 0; left: 0; height: 100% !important; width: 100% !important; }
-
-.systemMessage {
-	position: absolute;
-	top: 45%;
-	left: 50%;
-	transform: translateX(-55%) translateY(-50%);
-	-webkit-user-select: none;
-	cursor: default;
+.articleBody .media-wrapper:has(> img:only-of-type):has(+ h3) > img {
+	display: block;
+	width: 100%;
+	border-radius: 22%;
 }
 
-body > .systemMessage { color: var(--system-message-color); }
+.articleBody .media-wrapper:has(> img:only-of-type) + h3 {
+	display: flow-root;
+}
 
-/* Feed Specific */
+/* The empty caption paragraph MacStories leaves after every image would
+   lengthen the float; elsewhere its margin is what parts an image from the
+   text below, so it stays. */
+.articleBody .media-wrapper:has(+ h3) > p.image-caption:empty { display: none; }
+
+/* The same roundup through Miniflux, whose sanitizer drops the wrapper and
+   the caption's class: each icon is a bare image, an empty paragraph, then
+   the heading. A screenshot leaves the same pair before a paragraph instead.
+   That bare shape is common enough elsewhere that the rule also asks for
+   MacStories's image host. It undoes the bleed placement, which outranks the
+   float otherwise. The template marks the caption that Miniflux leaves as a
+   bare paragraph .ember-caption, which styles it with the rest. */
+.articleBody > img[src*="cdn.macstories.net/"]:has(+ p:empty + h3) {
+	float: left;
+	clear: left;
+	width: 5.5em;
+	margin: 0 1em 0.5em 0;
+	translate: none;
+	border-radius: 22%;
+}
+
+.articleBody > img[src*="cdn.macstories.net/"]:has(+ p:empty + h3) + p:empty { display: none; }
+
+.articleBody > img[src*="cdn.macstories.net/"] + p:empty + h3 {
+	display: flow-root;
+}
+
+/* ---------- Feedbin ------------------------------------------------- */
+
+/* Carried over from NetNewsWire's default stylesheet. */
 .feedbin--article-wrap {
 	border-top: 1px solid var(--header-table-border-color);
-}
-
-/* ---------- Newsfoot footnotes -------------------------------------- */
-
-.newsfoot-footnote-popover {
-	background: var(--ember-rule-2);
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.35), 0 3px 6px rgba(0, 0, 0, 0.2);
-	color: var(--ember-ink);
-	padding: 1px;
-}
-
-.newsfoot-footnote-popover-arrow {
-	background: var(--ember-bg);
-	border: 1px solid var(--ember-rule-2);
-}
-
-.newsfoot-footnote-popover-inner { background: var(--ember-bg); }
-
-/* Inline reference marker: one presentation no matter how the provider wrote it.
-   Whether a reference is wrapped in <sup> is arbitrary across formats, and while
-   the wrapper owned the sizing and the seat, two markers in the same sentence
-   could differ by 20% in size and 4px in height. Neutralize the wrapper; the
-   anchor below owns both.
-
-   Match the marker at any depth, not just as a direct child: on first click
-   newsfoot moves the anchor into a .newsfoot-footnote-container it inserts in
-   the anchor's place (newsfoot.js), so a `> a.footnote` test stops matching and
-   the wrapper's shrink comes back — the marker visibly shrinks when tapped. */
-.articleBody sup:has(a.footnote) {
-	font-size: inherit;
-	vertical-align: baseline;
-	position: static;
-	bottom: auto;
-}
-
-.articleBody a.footnote,
-.articleBody a.footnote:link,
-.articleBody a.footnote:visited {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	box-sizing: border-box;
-	background-color: var(--ember-footnote-chip);
-	color: var(--ember-accent);
-	box-shadow: inset 0 0 0 1px var(--ember-footnote-chip-edge);
-	text-decoration: none;
-	border-bottom: none;
-	padding: 0.18em 0.5em;
-	margin: 0 0.12em;
-	min-width: 2.1em;       /* a lone digit stays oblong rather than a circle */
-	border-radius: 0.45em;
-	vertical-align: 0.14em; /* seated just off the baseline, not superscripted */
-	top: auto;
-	font-size: 0.74em;
-	font-weight: 650;
-	line-height: 1;
-	font-variant-numeric: tabular-nums;
-	transition: background-color 120ms ease-out, box-shadow 120ms ease-out, color 120ms ease-out;
-}
-
-/* The template's adapter holds each marker to the word before it, so a line
-   never starts with a marker. newsfoot opens the popover inside that span, and
-   the note must wrap normally there. */
-.articleBody .ember-footnote-joined { white-space: nowrap; }
-.articleBody .ember-footnote-joined .newsfoot-footnote-popover { white-space: normal; }
-
-/* Stock newsfoot listens for clicks whose target is the marker anchor itself. */
-.articleBody a.footnote > * { pointer-events: none; }
-
-/* Some providers (Pandoc, table-based plugins) put the numeral in a <sup> or
-   <span> *inside* the anchor. The platform `body a *` rules would paint that
-   descendant with the accent — invisible against the capsule — and the global
-   `sup` raise would lift it clear of the capsule. Let the capsule own both. */
-.articleBody a.footnote * {
-	color: inherit;
-	font-size: inherit;
-	vertical-align: baseline;
-	position: static;
-	top: auto;
-	bottom: auto;
-}
-
-/* Touched or open, the chip fills in — the loud state is the transient one. */
-.articleBody a.footnote:hover,
-.newsfoot-footnote-popover + a.footnote {
-	background-color: var(--ember-accent);
-	border-bottom: none;
-	color: var(--ember-footnote-ink);
-	box-shadow: 0 2px 4px rgba(27, 23, 20, 0.24);
-}
-
-/* Footnote list at the foot of the article: a flagged "Notes" apparatus.
-   Shorten the trailing rule to an accent tick, label the block, and demote
-   the list so it reads as endmatter. */
-.articleBody hr:has(+ ol) {
-	width: 2.1em;
-	height: 4px;
-	background: var(--ember-accent);
-	opacity: 1;
-	border-radius: 2px;
-	margin: 3.6em 0 0;
-}
-
-.articleBody hr + ol {
-	margin-top: 0.7em;
-	font-size: 0.86em;
-	line-height: 1.55;
-	color: var(--ember-ink-mute);
-	padding-left: 1.7em;
-}
-
-.articleBody hr + ol::before {
-	content: "Notes";
-	display: block;
-	margin: 0 0 1em -1.7em;
-	font-size: 0.82rem;
-	font-weight: 700;
-	letter-spacing: 0.13em;
-	text-transform: uppercase;
-	color: var(--ember-accent);
-}
-
-.articleBody hr + ol > li {
-	margin-bottom: 0.7em;
-	padding-left: 0.3em;
-}
-
-.articleBody hr + ol > li::marker {
-	color: var(--ember-ink-mute);
-	font-variant-numeric: tabular-nums;
-}
-
-.articleBody hr + ol > li p { margin: 0 0 0.5em; }
-
-/* The ↩︎ backlink: quiet, no underline/border, accent on hover. */
-.articleBody a[data-ember-footnote-backlink]:link,
-.articleBody a[data-ember-footnote-backlink]:visited,
-.articleBody hr + ol a[href^="#fnr"]:link,
-.articleBody hr + ol a[href^="#fnr"]:visited {
-	color: var(--ember-ink-mute);
-	text-decoration: none;
-	border-bottom: none;
-	margin-left: 0.3em;
-}
-.articleBody a[data-ember-footnote-backlink]:hover,
-.articleBody hr + ol a[href^="#fnr"]:hover {
-	background: var(--ember-surface);
-	color: var(--ember-accent);
-	border-bottom: none;
-	border-radius: 0.2em;
-	box-shadow: 0 0 0 0.18em var(--ember-surface);
-	text-decoration: none;
-}
-
-/* Platform hover rules color link descendants independently. Keep glyphs such
-   as Six Colors' wrapped return arrow in step with the backlink itself. */
-.articleBody a[data-ember-footnote-backlink]:hover *,
-.articleBody hr + ol a[href^="#fnr"]:hover * {
-	color: var(--ember-accent);
 }
 
 /* =====================================================================
@@ -1132,10 +1374,17 @@ body > .systemMessage { color: var(--system-message-color); }
 
    NetNewsWire marks the platform itself: on macOS it gives .articleBody a
    text-size class (smallText … xxLargeText); on iOS and iPadOS it never
-   does. Each block below keys on that, so it needs no script and holds with
+   does. The template's .ember-primary-media carries the same class ahead of
+   any media, and the test looks there too: an audio or video player makes
+   WebKit style the page mid-parse, before .articleBody exists, and WebKit
+   never re-tests :root's :has() once it arrives. The root would keep the iOS
+   branch's 13px system font, which narrows the 44em column, until the next
+   full restyle (switching light and dark) widened it again.
+
+   Each block below keys on that, so it needs no script and holds with
    Article JavaScript off. :where() adds no specificity, so every rule keeps
-   the weight it would have unwrapped, and each nested selector starts with
-   an explicit & so it parses on iOS 17.0, before relaxed nesting.
+   the weight it would have unwrapped. Cinder is light only, so neither
+   block needs a dark-mode branch.
 
    Not @supports (-webkit-touch-callout: none), the usual iOS test: no
    desktop WebKit implements it, so previews and checks would only ever see
@@ -1143,7 +1392,7 @@ body > .systemMessage { color: var(--system-message-color); }
    ===================================================================== */
 
 /* iOS / iPadOS */
-:where(:root:not(:has(.articleBody:is(.smallText, .mediumText, .largeText, .xLargeText, .xxLargeText, .xlargeText, .xxlargeText)))) {
+:where(:root:not(:has(:is(.ember-primary-media, .articleBody):is(.smallText, .mediumText, .largeText, .xLargeText, .xxLargeText, .xlargeText, .xxlargeText)))) {
 
 	& body {
 		margin-top: 3px;
@@ -1151,12 +1400,11 @@ body > .systemMessage { color: var(--system-message-color); }
 		padding-left: 20px;
 		padding-right: 20px;
 		word-break: break-word;
-		-webkit-hyphens: auto;
+		hyphens: auto;
 		-webkit-text-size-adjust: none;
 	}
 
 	&:root {
-		color-scheme: light;
 		font: -apple-system-body;
 		/* The font-size is replaced at runtime by the dynamic type size */
 		font-size: [[font-size]]px;
@@ -1225,7 +1473,7 @@ body > .systemMessage { color: var(--system-message-color); }
 }
 
 /* macOS */
-:where(:root:has(.articleBody:is(.smallText, .mediumText, .largeText, .xLargeText, .xxLargeText, .xlargeText, .xxlargeText))) {
+:where(:root:has(:is(.ember-primary-media, .articleBody):is(.smallText, .mediumText, .largeText, .xLargeText, .xxLargeText, .xlargeText, .xxlargeText))) {
 
 	& body {
 		margin-top: 20px;
@@ -1244,7 +1492,6 @@ body > .systemMessage { color: var(--system-message-color); }
 	& .xxLargeText, & .xxlargeText { font-size: 22px; }
 
 	&:root {
-		color-scheme: light;
 		--accent-color: var(--ember-accent);
 		--block-quote-border-color: var(--ember-accent);
 		--hover-gradient-color-start: var(--ember-accent-2);

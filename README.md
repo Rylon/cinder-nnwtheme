@@ -39,12 +39,15 @@ All the other excellent features of Ember are still present:
 - **Prominent pull-quotes** with a tinted panel and accent rule.
 - **Full-bleed images** that span the column edge-to-edge, captions kept inset.
 - **Captions set apart** in serif italic, with photo credits in muted small caps.
+- **Podcasts, video, and photos** get a design of their own: audio as a card with the episode's title, length, and size; video players and episode artwork leading the article; attached photos as a gallery after it.
 - **Broader footnote support** with native-style popovers for common Markdown, Substack, and WordPress footnote formats.
 - **Platform-tuned** — Dynamic Type on iOS, a larger default size on iPad, and a desktop type scale on macOS.
 
 ## Requirements
 
 A recent version of NetNewsWire (which supports custom `.nnwtheme` themes) on macOS, iOS, or iPadOS.
+
+Enclosures (podcast audio, video, and attached images) need NetNewsWire 7.3, in beta as of November 2026. Earlier releases don't show enclosures at all, and Cinder reads as before there. Splitting the audio card's title from its details also needs Article JavaScript; without it, the whole caption heads the card.
 
 The additional footnote formats need NetNewsWire's **Article JavaScript** setting, which is on by default. With it off, Cinder still renders normally, but only the footnote formats NetNewsWire recognises itself get popovers.
 

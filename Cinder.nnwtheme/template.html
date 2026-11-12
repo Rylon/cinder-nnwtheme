@@ -27,24 +27,51 @@ time_short: Long version of the publish time.
 
 text_size_class: The size class that the user has selected in Preferences for article text.
 body: The body of the article.
+primary_media: The article's main media: a video, else audio with the article image, else the article image.
+enclosures: Audio and video players and images from the article's enclosures.
 
 -->
 
-<header class="headerContainer">
-	<table cellpadding=0 cellspacing=0 border=0 class="headerTable">
-	<tr>
-		<td class="header leftAlign"><a class="feedlink" href="[[feed_link]]">[[feed_link_title]]</a><br />[[byline]]</td>
-		<td class="header rightAlign avatar"><img id="nnwImageIcon" src="[[avatar_src]]" alt="" height=48 width=48 /></td>
-	</tr>
-	</table>
+<header class="headerContainer masthead">
+	<div class="header"><a class="feedlink" href="[[feed_link]]">[[feed_link_title]]</a><br />[[byline]]</div>
+	<div class="header avatar"><img id="nnwImageIcon" src="[[avatar_src]]" alt="" height=48 width=48 /></div>
 </header>
 
 <article>
 <div class="articleTitle"><h1><a href="[[preferred_link]]">[[title]]</a></h1></div>
 <div class="[[dateline_style]]"><a href="[[preferred_link]]">[[datetime_medium]]</a></div>
 <div class="externalLink">[[external_link_label]] <a href="[[external_link]]">[[external_link_stripped]]</a></div>
+<div class="ember-primary-media ember-enclosures [[text_size_class]]">[[primary_media]]</div>
 <div id="bodyContainer" class="articleBody [[text_size_class]]">[[body]]</div>
+<div class="ember-enclosures [[text_size_class]]">[[enclosures]]</div>
 </article>
+
+<!--
+	Audio caption adapter. Split NetNewsWire's one-line caption,
+	"Title · 1:54:09 · 54.9 MB", into the card's title and its duration and size.
+-->
+<script>
+(() => {
+	const duration = /^\d+:\d\d(:\d\d)?$/;
+	const size = /^(Zero KB|[\d.,\u00a0\u202f]+\s?\p{L}{1,5})$/u;
+	for (const caption of document.querySelectorAll(".nnw-enclosure-audio > .nnw-enclosure-caption")) {
+		const parts = caption.textContent.split(" · ");
+		const meta = [];
+		while (parts.length > 1 && (duration.test(parts.at(-1)) || size.test(parts.at(-1)))) {
+			meta.unshift(parts.pop());
+		}
+		const title = document.createElement("span");
+		title.className = "ember-enclosure-title";
+		title.textContent = parts.join(" · ");
+		caption.replaceChildren(title);
+		if (meta.length) {
+			const details = caption.appendChild(document.createElement("span"));
+			details.className = "ember-enclosure-meta";
+			details.textContent = meta.join(" · ");
+		}
+	}
+})();
+</script>
 
 <!--
 	Caption adapter. Ars Technica's feed reaches NetNewsWire in two broken shapes:
@@ -53,6 +80,10 @@ body: The body of the article.
 	p.ember-caption and drop the repeat, and mark MacStories's caption once
 	Miniflux strips its class; then set any trailing "Credit: …" or "Source: …" apart
 	as span.ember-credit. Floated images are skipped: text beside them is copy.
+	Then mark an opening aside in parentheses p.ember-aside for the drop cap, and an
+	opening paragraph that starts with a symbol p.ember-uncapped to go without. Last,
+	mark a WordPress feed's "appeared first on" line p.ember-feed-credit to hide it,
+	and size a WordPress embed's card, hiding its plain link, once the card loads.
 -->
 <script>
 (() => {
@@ -103,6 +134,74 @@ body: The body of the article.
 		rest.before(credit);
 		while (credit.nextSibling) credit.append(credit.nextSibling);
 	}
+
+	// An article can open with an aside wholly in parentheses or brackets ("(It's
+	// Halloween Week on Unsung…)", "[Editor's note: …]"). Mark it p.ember-aside so
+	// the drop cap skips it, the way it skips a caption, and goes to the paragraph
+	// that starts the article proper instead of capping "(I".
+	const isAside = text => {
+		const close = {"(": ")", "[": "]"}[text[0]];
+		if (!close || !text.endsWith(close)) return false;
+		let depth = 0;
+		for (let i = 0; i < text.length; i++) {
+			if (text[i] === text[0]) depth++;
+			else if (text[i] === close && --depth === 0) return i === text.length - 1;
+		}
+		return false;
+	};
+	// The paragraph that does start the article can open with a symbol ("℅ Automattic
+	// Design:", "→", "$1,999"), which a cap would blow up into a stray glyph. Mark it
+	// p.ember-uncapped: the article gets no cap, as when it opens with a heading.
+	for (const paragraph of article.querySelectorAll(":scope > p")) {
+		if (paragraph.matches(":empty, .ember-caption, .wp-caption-text")) continue;
+		const text = squash(paragraph.textContent);
+		if (isAside(text)) {
+			paragraph.classList.add("ember-aside");
+			continue;
+		}
+		if (/^[\p{P}\s]*[^\p{L}\p{N}\p{P}\s]/u.test(text)) paragraph.classList.add("ember-uncapped");
+		break;
+	}
+
+	// Many WordPress feeds end every item with "The post <title> appeared first on
+	// <site>.", a line the site itself never shows. Mark it p.ember-feed-credit so the
+	// stylesheet hides it. It has to be the article's last block and hold two links,
+	// the post and the site. The wordings, common translations included, come from
+	// Daisy (github.com/shane-hendry/daisy).
+	const feedCredit = /^(?:The post|Der Beitrag|L[’']article|La entrada|Il post|O post|Het bericht|Inlägget|Indlægget) .{1,300} (?:appeared first on|erschien zuerst auf|est apparu en premier sur|apareció primero en|è apparso per primo su|apareceu primeiro em|verscheen eerst op|dök upp först på|dukkede op først på) .{1,200}$/i;
+	const last = [...article.children].findLast(element => squash(element.textContent) || element.matches("img, video, iframe, hr") || element.querySelector("img, video, iframe"));
+	if (last?.matches("p") && last.querySelectorAll("a").length >= 2 && feedCredit.test(squash(last.textContent))) {
+		last.classList.add("ember-feed-credit");
+	}
+
+	// A WordPress embed (one post quoting another) is a block quote holding a plain
+	// link, then the quoted post's card in an iframe. On the site, WordPress sizes the
+	// card to the height it reports and hides the link; here the card would stay cut
+	// off at its 282px placeholder height under a link that repeats its title. Do the
+	// same once the card reports in, so a card that never loads keeps its link. The
+	// card also hands its link clicks to the page; follow those within its own site,
+	// as WordPress does, through a real link so NetNewsWire opens the browser.
+	const embeds = [...article.querySelectorAll("iframe.wp-embedded-content")];
+	if (embeds.length) {
+		window.addEventListener("message", event => {
+			const embed = embeds.find(frame => frame.contentWindow === event.source);
+			const {message, value} = event.data ?? {};
+			if (!embed) return;
+			if (message === "height" && Number.isFinite(value)) {
+				// NetNewsWire sizes an iframe by the aspect ratio of its attributes.
+				embed.style.aspectRatio = "auto";
+				embed.style.height = `${Math.min(Math.max(value, 200), 1000)}px`;
+				const link = embed.previousElementSibling;
+				if (link?.matches("blockquote.wp-embedded-content")) link.classList.add("ember-embed-fallback");
+			} else if (message === "link" && typeof value === "string") {
+				const host = URL.parse(value)?.host;
+				if (!host || host !== URL.parse(embed.src)?.host) return;
+				const link = document.createElement("a");
+				link.href = value;
+				link.click();
+			}
+		});
+	}
 })();
 </script>
 
@@ -129,20 +228,56 @@ body: The body of the article.
 	let referenceNumber = 0;
 	let noteNumber = 0;
 
-	let baseUrl;
-	try {
-		baseUrl = new URL(document.baseURI);
-	} catch (_) {
-		baseUrl = null;
+	const baseUrl = URL.parse(document.baseURI);
+
+	// The page's base URL isn't always the article's: when the article has no link of
+	// its own, NetNewsWire falls back to the feed's home page, as it does for every
+	// article synced through the Google Reader API (FreshRSS, Miniflux). The title
+	// links to the article's own URL, so links to that page count as local too.
+	const titleLink = document.querySelector(".articleTitle a")?.getAttribute("href");
+	const articleUrl = titleLink && baseUrl ? URL.parse(titleLink, baseUrl) : null;
+
+	function isSamePage(url, page) {
+		return url.origin === page.origin && url.pathname === page.pathname && url.search === page.search;
+	}
+
+	// FreshRSS renames every id in an article to data-sanitized-id, which leaves each
+	// footnote reference pointing at nothing. Put back the ones that don't collide.
+	for (const element of article.querySelectorAll("[data-sanitized-id]")) {
+		const id = element.dataset.sanitizedId;
+		if (id && !element.id && !document.getElementById(id)) element.id = id;
+	}
+
+	// Feedly deletes every id outright, so there is nothing to put back. The notes'
+	// return links survive, though: the list item holding a link to #fnref-1 is the
+	// note that #fn-1 names. Rebuild that id, and the reference's own, wherever a
+	// reference still points at the missing note.
+	const missingTargets = new Map();
+	for (const link of article.querySelectorAll("a[href*='#']")) {
+		const id = localHashId(link);
+		if (id && !missingTargets.has(id) && !document.getElementById(id)) missingTargets.set(id, link);
+	}
+	for (const [referenceId, backlink] of missingTargets) {
+		const noteId = referenceId.replace("fnref", "fn");
+		const reference = missingTargets.get(noteId);
+		const note = backlink.closest("li");
+		if (noteId === referenceId || !reference || !note || note.id || note.contains(reference) || document.getElementById(noteId)) continue;
+		note.id = noteId;
+		const marker = reference.closest("sup");
+		if (marker && !marker.id && !document.getElementById(referenceId)) marker.id = referenceId;
 	}
 
 	function localHashId(link) {
 		const href = link.getAttribute("href");
 		if (!href?.includes("#") || !baseUrl) return;
+		const url = URL.parse(href, baseUrl);
+		if (!url?.hash) return;
+		const isLocal = isSamePage(url, baseUrl) ||
+			(articleUrl && isSamePage(url, articleUrl)) ||
+			(url.origin === baseUrl.origin && url.pathname === "/" && !url.search);
+		if (!isLocal) return;
+		// A malformed escape ("#fn%") throws.
 		try {
-			const url = new URL(href, baseUrl);
-			if (url.origin !== baseUrl.origin || !url.hash) return;
-			if ((url.pathname !== baseUrl.pathname || url.search !== baseUrl.search) && (url.pathname !== "/" || url.search)) return;
 			return decodeURIComponent(url.hash.slice(1));
 		} catch (_) {
 			return;

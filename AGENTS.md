@@ -84,6 +84,10 @@ fixtures are captured from NetNewsWire with `npx nnw-theme@2 capture`.
 
 ### Conventions
 
+- **Browser support:** Cinder only runs in NetNewsWire's WebKit. The floor is
+  NetNewsWire's own (macOS 15, iOS 18, so Safari 18): use any CSS, HTML, or JS
+  feature WebKit shipped by then without fallbacks; newer ones only as progressive
+  enhancement.
 - Fixtures are TOML in `fixtures/` (keys mirror the template variables; HTML bodies
   use `'''triple-quoted'''` literals). Keep interesting edge cases: long byline,
   long title, pull-quotes, figures, footnotes, smart quotes.
@@ -98,6 +102,14 @@ fixtures are captured from NetNewsWire with `npx nnw-theme@2 capture`.
   no accent bar over section headings.
 - The `--ember-*` custom properties, `ember-*` classes and `emberFootnotes` keep
   Ember's names so its changes merge cleanly. Don't rename them.
+- Enclosures go through the `enclosures` macro in `template.html`, never NNW's
+  append-after-body fallback, which wraps the body in a `<div>` and breaks every
+  `.articleBody > …` rule. Its wrapper must stay hidden when it holds no
+  `.nnw-enclosures` (older NNW leaves the macro as text; `check` renders that case).
+  Never write the macro in double brackets in a comment: NNW tests for the literal
+  text anywhere in the template. `fixtures/enclosure-*.toml` cover each kind with
+  articles captured from a NetNewsWire debug build. Captured images carry no size,
+  so `enclosure-podcast` points its artwork at a square stand-in in `fixtures/media/`.
 - Commit messages are Conventional Commits; `.github/cliff.toml` turns them into
   the release notes, so the type prefix decides which section a change lands in
   (and `chore(release):` / `ci:` are omitted entirely).
@@ -135,20 +147,25 @@ Finish with `npx nnw-theme@2 check`, and show the user any fixture whose look ch
 
 ### Releasing
 
-Two version numbers move together, and they are **not** the same number:
+Three version values move together, and the integer is **not** the same number as
+the other two:
 
 | Where | Form | Example |
 |-------|------|---------|
 | Git tag | `vMAJOR.MINOR` | `v1.1` |
 | `Cinder.nnwtheme/Info.plist` → `Version` | a plain monotonic **integer**, +1 every release | `2` |
+| `Cinder.nnwtheme/Info.plist` → `CFBundleShortVersionString` | the tag without its `v` | `1.1` |
 
 NetNewsWire compares that integer to decide whether an installed theme is
 out of date, so it must increase on every release regardless of how the tag
 moves. It is *not* derived from the tag. Cinder restarted at 1 under its new
-identifier, so Ember's numbers mean nothing here.
+identifier, so Ember's numbers mean nothing here. `CFBundleShortVersionString` is
+the version Finder's Get Info window shows; it ignores `CFBundleGetInfoString`.
+`bump` increases its last number; for a new major version, pass
+`--get-info-version 2.0`.
 
 ```sh
-npx nnw-theme@2 bump                 # Version +1
+npx nnw-theme@2 bump                 # Version +1, and 1.0 -> 1.1 for Get Info
 git commit -am 'chore(release): v1.1'
 git push
 ```
